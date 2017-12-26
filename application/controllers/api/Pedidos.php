@@ -52,9 +52,7 @@ class Pedidos extends REST_Controller
     {
         $estado = $this->input->post('estado');
 
-        $params = array(
-            'estado' => $estado
-        );
+        $params = array('estado' => $estado);
 
         $data['ventas'] = $this->venta->get_ventas($params);
 
@@ -132,11 +130,29 @@ class Pedidos extends REST_Controller
                 $data['success'] = '0';
 
         } else {
-            $data['success'] = "3";
+            $data['success'] = '3';
             $data['sin_stock'] = json_encode($sin_stock);
         }
 
         $result['response'] = $data;
+
+        $this->response($result, 200);
+    }
+
+    function anular_post()
+    {
+        $venta_id = $this->input->post('venta_id');
+        $numero = $this->input->post('numero');
+        $serie = $this->input->post('serie');
+        $id_usuario = $this->input->post('id_usuario');
+
+        $venta = $this->venta->anular_venta($venta_id, $serie, $numero, $id_usuario);
+
+        if ($venta) {
+            $result['response'] = 'success';
+        } else {
+            $result['response'] = 'failed';
+        }
 
         $this->response($result, 200);
     }

@@ -7,7 +7,6 @@ class Cajas_api_model extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->load->model('cajas/cajas_mov_api_model');
     }
 
     function get_cuenta($id)
@@ -29,5 +28,18 @@ class Cajas_api_model extends CI_Model
             $this->db->where('id', $id);
             $this->db->update('caja_desglose', array('saldo' => $new_saldo));
         }
+    }
+
+    function save_pendiente($data, $id_usuario){
+
+        $this->db->insert('caja_pendiente', array(
+            'caja_desglose_id'=>$this->get_valid_cuenta_id($data['moneda_id'], $data['local_id']),
+            'usuario_id'=>$id_usuario,
+            'tipo'=>$data['tipo'],
+            'monto'=> $data['monto'],
+            'estado'=>0,
+            'IO'=>$data['IO'],
+            'ref_id'=>$data['ref_id']
+        ));
     }
 }

@@ -8,7 +8,7 @@ class Producto_api_model extends CI_Model
         $this->load->database();
     }
 
-    function get_productos_listall()
+    function get_productos_listall($str_producto)
     {
         $result = $this->db->select('producto_id, producto_codigo_interno as codigo, producto_nombre, producto_codigo_barra as barra')
             ->from('producto')
@@ -17,6 +17,7 @@ class Producto_api_model extends CI_Model
             ->where('producto.producto_estado', '1')
             ->where('unidades_has_precio.id_precio', 3)
             ->distinct('producto_id')
+            ->like('producto_nombre', $str_producto)
             ->limit(100)
             ->get()->result_array();
 

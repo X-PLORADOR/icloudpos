@@ -439,4 +439,100 @@ class Venta_new_api_model extends CI_Model
             ));
         }
     }
+
+    function anular_venta($venta_id, $serie, $numero, $id_usuario)
+    {
+        $venta = $this->get_venta_detalle($venta_id);
+
+        $cantidades = array();
+        foreach ($venta->detalles as $detalle) {
+            if (!isset($cantidades[$detalle->producto_id]))
+                $cantidades[$detalle->producto_id] = 0;
+
+            $cantidades[$detalle->producto_id] += $this->unidades_api_model->convert_minimo_by_um(
+                $detalle->producto_id,
+                $detalle->unidad_id,
+                $detalle->cantidad
+            );
+        }
+
+        /*foreach ($cantidades as $key => $value) {
+
+            $old_cantidad = $this->db->get_where('producto_almacen', array(
+                'id_producto' => $key,
+                'id_local' => $venta->local_id
+            ))->row();
+
+            $old_cantidad_min = $old_cantidad != NULL ? $this->unidades_api_model->convert_minimo_um($key, $old_cantidad->cantidad, $old_cantidad->fraccion) : 0;
+
+            $result = $this->unidades_api_model->get_cantidad_fraccion($key, $old_cantidad_min + $value, $venta->local_id);
+
+            $this->db->where('io', 2);
+            $this->db->where('operacion', 1);
+            $this->db->where('ref_id', $venta_id);
+            $referencias = $this->db->get('kardex')->row();
+
+            if (!isset($referencias->ref_val))
+                $referencias->ref_val == "";
+
+            $values = array(
+                'local_id' => $venta->local_id,
+                'producto_id' => $key,
+                'cantidad' => $value * -1,
+                'io' => 2,
+                'tipo' => 7,
+                'operacion' => 5,
+                'serie' => $serie,
+                'numero' => $numero,
+                'ref_id' => $venta->venta_id,
+                'ref_val' => $referencias->ref_val
+            );
+
+            $this->kardex_api_model->set_kardex($values, $id_usuario);
+
+            if ($old_cantidad != NULL) {
+                $this->db->where('id_producto', $key);
+                $this->db->where('id_local', $venta->local_id);
+                $this->db->update('producto_almacen', array(
+                    'cantidad' => $result['cantidad'],
+                    'fraccion' => $result['fraccion']
+                ));
+            } else {
+                $this->db->insert('producto_almacen', array(
+                    'id_producto' => $key,
+                    'id_local' => $venta->local_id,
+                    'cantidad' => $result['cantidad'],
+                    'fraccion' => $result['fraccion']
+                ));
+            }
+
+            if ($venta->condicion_id == '2') {
+                $this->db->where('id_venta', $venta_id);
+                $this->db->delete('credito');
+
+                $this->db->where('id_venta', $venta_id);
+                $this->db->delete('credito_cuotas');
+            }
+
+            $this->db->where('venta_id', $venta_id);
+            $this->db->update('venta', array('venta_status' => 'ANULADO'));
+
+            $venta = $this->db->get_where('venta', array('venta_id' => $venta_id))->row();
+
+            $moneda_id = 1;
+            if ($venta->id_moneda == 1030)
+                $moneda_id = 2;
+
+            $this->cajas_api_model->save_pendiente(array(
+                'monto' => $venta->total,
+                'tipo' => 'VENTA_ANULADA',
+                'IO' => 2,
+                'ref_id' => $venta_id,
+                'moneda_id' => $moneda_id,
+                'local_id' => $venta->local_id
+            ), $id_usuario);
+        }*/
+
+        return $venta_id;
+    }
 }

@@ -51,9 +51,10 @@ class Productos extends REST_Controller
 
     public function index_post() {
         $id_usuario = $this->input->post('id_usuario');
+        $str_producto = $this->input->post('str_producto');
 
         $data = array();
-        $productos = $this->producto_api_model->get_productos_listall();
+        $productos = $this->producto_api_model->get_productos_listall($str_producto);
 
         foreach ($productos as $prod) {
             $producto['producto_id'] = $prod['producto_id'];
