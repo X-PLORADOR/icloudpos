@@ -42,4 +42,44 @@ class Cajas_api_model extends CI_Model
             'ref_id'=>$data['ref_id']
         ));
     }
+
+    function get_valid_cuenta_id($moneda, $local){
+        $cuenta = $this->db->select('caja_desglose.id as id')->from('caja_desglose')
+            ->join('caja', 'caja.id = caja_desglose.caja_id')
+            ->where('caja_desglose.principal', 1)
+            ->where('caja.moneda_id', $moneda)
+            ->where('caja.local_id', $local)
+            ->get()->row();
+
+        if($cuenta == NULL){
+            $this->db->insert('caja', array(
+                'local_id'=>$local,
+                'moneda_id'=>$moneda,
+                'responsable_id'=>$this->session->userdata('nUsuCodigo'),
+                'estado'=>1
+            ));
+            $caja_id = $this->db->insert_id();
+
+            $this->db->insert('caja_desglose', array(
+                'caja_id'=>$caja_id,
+                'responsable_id'=>$this->session->userdata('nUsuCodigo'),
+                'descripcion'=>'Caja Temporal Principal',
+                'saldo'=>0,
+                'principal'=>1,
+                'retencion'=>0,
+                'estado'=>1,
+
+            ));
+
+            $cuenta_id = $this->db->insert_id();
+
+            $this->db->where('caja_id', $caja_id);
+            $this->db->where('id !=', $cuenta_id);
+            $this->db->update('caja_desglose', array('principal'=>0));
+
+            return $cuenta_id;
+        }
+
+        return $cuenta->id;
+    }
 }

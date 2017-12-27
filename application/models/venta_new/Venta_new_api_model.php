@@ -456,7 +456,7 @@ class Venta_new_api_model extends CI_Model
             );
         }
 
-        /*foreach ($cantidades as $key => $value) {
+        foreach ($cantidades as $key => $value) {
 
             $old_cantidad = $this->db->get_where('producto_almacen', array(
                 'id_producto' => $key,
@@ -531,7 +531,7 @@ class Venta_new_api_model extends CI_Model
                 'moneda_id' => $moneda_id,
                 'local_id' => $venta->local_id
             ), $id_usuario);
-        }*/
+        }
 
         return $venta_id;
     }

@@ -54,14 +54,16 @@ class Pedidos extends REST_Controller
 
         $params = array('estado' => $estado);
 
-        $data['ventas'] = $this->venta->get_ventas($params);
+        $ventas = $this->venta->get_ventas($params);
 
-        if (sizeof($data) > 0) {
-            $this->response($data, 200);
-        } else {
-            $res = array();
-            $this->response($res, 200);
+        $data = array();
+        foreach ($ventas as $venta) {
+            $v = $this->venta->get_venta_detalle($venta->venta_id);
+
+            $data['ventas'][] = $v;
         }
+
+        $this->response($data, 200);
     }
 
     public function save_post()
