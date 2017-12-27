@@ -506,13 +506,13 @@ class Venta_new_api_model extends CI_Model
                 ));
             }
 
-            if ($venta->condicion_id == '2') {
+            /*if ($venta->condicion_id == '2') {
                 $this->db->where('id_venta', $venta_id);
                 $this->db->delete('credito');
 
                 $this->db->where('id_venta', $venta_id);
                 $this->db->delete('credito_cuotas');
-            }
+            }*/
 
             $this->db->where('venta_id', $venta_id);
             $this->db->update('venta', array('venta_status' => 'ANULADO'));
