@@ -244,7 +244,9 @@ class Venta_new_api_model extends CI_Model
 
     function save_venta_credito($venta, $productos, $traspasos = array(), $cuotas)
     {
-        $this->save_traspasos($traspasos);
+        if (sizeof($traspasos) > 0) {
+            $this->save_traspasos($traspasos , $venta['id_usuario']);
+        }
 
         if ($venta['venta_status'] == 'CAJA' && $venta['c_inicial'] == 0)
             $venta['venta_status'] = 'COMPLETADO';
@@ -290,7 +292,7 @@ class Venta_new_api_model extends CI_Model
 
             $this->cajas_mov_api_model->save_mov(array(
                 'caja_desglose_id' => $cuenta_id,
-                'usuario_id' => $this->session->userdata('nUsuCodigo'),
+                'usuario_id' => $venta['id_usuario'],
                 'fecha_mov' => date('Y-m-d H:i:s'),
                 'movimiento' => 'INGRESO',
                 'operacion' => 'VENTA',
@@ -304,7 +306,7 @@ class Venta_new_api_model extends CI_Model
 
         $this->correlativos_api_model->update_nota_pedido($venta['local_id'], $venta_id);
 
-        $this->save_producto_detalles($venta_id, $venta['id_documento'], $venta['local_id'], $productos, $venta['id_usuario']);
+        $this->save_producto_detalles($venta_id, $venta['local_id'], $productos, $venta['id_usuario']);
 
         $this->db->insert('credito', array(
             'id_venta' => $venta_id,
@@ -505,14 +507,6 @@ class Venta_new_api_model extends CI_Model
                     'fraccion' => $result['fraccion']
                 ));
             }
-
-            /*if ($venta->condicion_id == '2') {
-                $this->db->where('id_venta', $venta_id);
-                $this->db->delete('credito');
-
-                $this->db->where('id_venta', $venta_id);
-                $this->db->delete('credito_cuotas');
-            }*/
 
             $this->db->where('venta_id', $venta_id);
             $this->db->update('venta', array('venta_status' => 'ANULADO'));

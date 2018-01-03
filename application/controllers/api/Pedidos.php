@@ -90,7 +90,7 @@ class Pedidos extends REST_Controller
         $venta['vc_num_oper'] = $this->input->post('vc_num_oper');
         $venta['vc_tipo_tarjeta'] = $this->input->post('vc_tipo_tarjeta');
 
-        $venta['c_dni_garante'] = $this->input->post('c_garante');
+        $venta['c_dni_garante'] = null;
         $venta['c_inicial'] = $this->input->post('c_saldo_inicial') != '' ? $this->input->post('c_saldo_inicial') : 0;
         $venta['c_precio_contado'] = $this->input->post('c_precio_contado');
         $venta['c_precio_credito'] = $this->input->post('c_precio_credito');
@@ -136,9 +136,7 @@ class Pedidos extends REST_Controller
             $data['sin_stock'] = json_encode($sin_stock);
         }
 
-        $result['response'] = $data;
-
-        $this->response($result, 200);
+        $this->response($data, 200);
     }
 
     function anular_post()
