@@ -35,17 +35,7 @@ class Auth extends CI_Controller
 			{
 				// Clear Password
 				unset($auth['var_usuario_clave']);
-				
-				// Is Mobile
-				if ($this->agent->is_mobile())
-				{
-					if ($auth['smovil'] == false)
-					{
-						echo json_encode(array('status' => 'failed'));
-						exit();
-					}
-				}
-				
+
 				// Config
 				$config = array();
 				$configuraciones = $this->opciones_api_model->get_opciones();
@@ -56,8 +46,8 @@ class Auth extends CI_Controller
 					}
 				}
 
-                $config['tipos_documento'] = array('FACTURA', 'BOLETA DE VENTA');
-				
+				$config['tipos_documento'] = array('FACTURA', 'BOLETA DE VENTA');
+
 				// Nuevo Api Key
 				$apiKey = $this->apiModel->new_api_key($auth['nUsuCodigo'], $level = false, $ignore_limits = false, $is_private_key = false, $ip_addresses = '');
 
@@ -76,7 +66,7 @@ class Auth extends CI_Controller
 
 				// Json Array
 				$json = array(
-					'status'  => 'success', 
+					'status'  => 'success',
 					'auth'    => $auth,
 					'config'  => $config,
 					'api_key' => $apiKey,
@@ -84,8 +74,9 @@ class Auth extends CI_Controller
 					'locales' => $locales,
 					'monedas' => $monedas
 				);
-				
+
 				echo json_encode($json);
+
 			} else {
 				echo json_encode(array('status' => 'ne'));
 			}

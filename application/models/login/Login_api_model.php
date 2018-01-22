@@ -5,6 +5,8 @@ class Login_api_model extends CI_Model
     function __construct()
     {
         parent::__construct();
+        $this->load->database();
+
     }
 
     function verificar_usuario($data) {
