@@ -33,7 +33,7 @@
                         <div class="col-md-8">
                             <div class="input-group">
                                 <div
-                                    class="input-group-addon"><?= $caja_actual->moneda_id == 1 ? MONEDA : DOLAR ?></div>
+                                    class="input-group-addon"><?= $caja_actual->simbolo ?></div>
                                 <input type="text" id="saldo_actual" name="saldo_actual"
                                        class="form-control" readonly
                                        value="<?= isset($cuenta->saldo) ? $cuenta->saldo : '0' ?>">
@@ -90,13 +90,14 @@
                         </label><br>
                     <div id="ret_content"
                          style="width: 100%; height: 100px; border: 1px solid #dae8e7; overflow-y: scroll;">
+                        <?php $md = get_moneda_defecto()?>
                         <?php foreach ($retenciones as $retencion): ?>
                             <?php if(date('Y-m', strtotime($retencion->fecha_mov)) == date('Y-m')):?>
                             <label style="cursor: pointer;">
                                 <input class="ret_check" type="checkbox"
                                        value="<?= $retencion->id ?>"
                                        data-saldo="<?=$retencion->saldo?>">
-                                       <?= MONEDA.' '.number_format($retencion->saldo, 2)?> |
+                                       <?= $md->simbolo.' '.number_format($retencion->saldo, 2)?> |
                                         #: <?= $retencion->ref_val ?>
                             </label><br>
                         <?php endif;?>
@@ -114,7 +115,7 @@
                         <div class="col-md-8">
                             <div class="input-group">
                                 <div
-                                    class="input-group-addon"><?= $caja_actual->moneda_id == 1 ? MONEDA : DOLAR ?></div>
+                                    class="input-group-addon"><?= $caja_actual->simbolo ?></div>
                                 <input type="number" id="importe" name="importe"
                                        class="form-control"
                                        value="0.00" readonly>
@@ -159,7 +160,11 @@
     <?php foreach ($cajas as $caja): ?>
     cajas.push({
         'id': '<?=$caja->id?>',
-        'moneda_id': '<?=$caja->moneda_id?>'
+        'moneda_id': '<?=$caja->moneda_id?>',
+        'nombre': '<?=$caja->nombre?>',
+        'simbolo': '<?=$caja->simbolo?>',
+        'tasa': '<?=$caja->tasa_soles ?>',
+        'local_id': '<?=$caja->local_id?>'
     });
     <?php endforeach; ?>
 

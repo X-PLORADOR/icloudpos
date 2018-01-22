@@ -20,6 +20,7 @@
 </tr>
 </table>
 <br>
+<?php $md = get_moneda_defecto(); ?>
 <table cellpadding="3" cellspacing="0">
     <thead>
     <tr>
@@ -60,4 +61,4 @@
     </tbody>
 </table>
 
-<h4 style="text-align: right;">Importe: <?= MONEDA?> <?=number_format($gastos_totales->total, 2)?></h4>
+<h4 style="text-align: right;">Importe: <?= $md->simbolo?> <?=number_format($gastos_totales->total, 2)?></h4>

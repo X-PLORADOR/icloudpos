@@ -1,3 +1,4 @@
+<?php $md = get_moneda_defecto() ?>
 <div class="modal-dialog" style="width: 40%">
     <div class="modal-content">
         <div class="modal-header">
@@ -24,7 +25,7 @@
                     </div>
                     <div class="col-md-9">
                         <div class="input-prepend input-append input-group">
-                            <label class="input-group-addon"><?= MONEDA ?></label>
+                            <label class="input-group-addon"><?= $md->simbolo ?></label>
                             <input
                                 type="text"
                                 class='input-square input-small form-control'
@@ -41,7 +42,7 @@
                     </div>
                     <div class="col-md-9">
                         <div class="input-prepend input-append input-group">
-                            <label id="lblSim4" class="input-group-addon"><?= MONEDA ?></label><input
+                            <label id="lblSim4" class="input-group-addon"><?= $md->simbolo ?></label><input
                                 type="number"
                                 class='input-square input-small form-control'
                                 min="0.0"
@@ -78,7 +79,7 @@
                     </div>
                     <div class="col-md-9">
                         <div class="input-prepend input-append input-group">
-                            <label id="lblSim5" class="input-group-addon"><?= MONEDA ?></label><input
+                            <label id="lblSim5" class="input-group-addon"><?= $md->simbolo ?></label><input
                                 type="number"
                                 tabindex="0"
                                 class='input-square input-small form-control'
@@ -100,7 +101,7 @@
                     </div>
                     <div class="col-md-9">
                         <div class="input-prepend input-append input-group">
-                            <label id="lblSim6" class="input-group-addon"><?= MONEDA ?></label><input
+                            <label id="lblSim6" class="input-group-addon"><?= $md->simbolo ?></label><input
                                 type="text"
                                 class='input-square input-small form-control'
                                 name="vuelto"

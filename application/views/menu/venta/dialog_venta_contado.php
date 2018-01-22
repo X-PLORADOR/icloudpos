@@ -1,3 +1,4 @@
+<?php $md = get_moneda_defecto()?>
 <input type="hidden" id="caja_venta_id" value="">
 <div class="modal-dialog" style="width: 40%">
     <div class="modal-content">
@@ -26,7 +27,7 @@
                     </div>
                     <div class="col-md-9">
                         <div class="input-prepend input-append input-group">
-                            <label class="input-group-addon"><?= MONEDA ?></label>
+                            <label class="input-group-addon"><?= $md->simbolo ?></label>
                             <input
                                 type="text"
                                 class='input-square input-small form-control'
@@ -43,7 +44,7 @@
                     </div>
                     <div class="col-md-9">
                         <div class="input-prepend input-append input-group">
-                            <label class="input-group-addon tipo_moneda"><?= MONEDA ?></label><input
+                            <label class="input-group-addon tipo_moneda"><?= $md->simbolo ?></label><input
                                 type="number"
                                 class='input-square input-small form-control'
                                 min="0.0"
@@ -67,7 +68,7 @@
                     </div>
                     <div class="col-md-9">
                         <div class="input-prepend input-append input-group">
-                            <label class="input-group-addon tipo_moneda"><?= MONEDA ?></label><input
+                            <label class="input-group-addon tipo_moneda"><?= $md->simbolo ?></label><input
                                 type="number"
                                 tabindex="0"
                                 class='input-square input-small form-control'
@@ -89,7 +90,7 @@
                     </div>
                     <div class="col-md-9">
                         <div class="input-prepend input-append input-group">
-                            <label class="input-group-addon tipo_moneda"><?= MONEDA ?></label><input
+                            <label class="input-group-addon tipo_moneda"><?= $md->simbolo ?></label><input
                                 type="text"
                                 class='input-square input-small form-control'
                                 value="0.00"

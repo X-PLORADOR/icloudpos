@@ -1,16 +1,17 @@
 <?php $ruta = base_url(); ?>
 <!--<script src="<?php echo $ruta; ?>recursos/js/custom.js"></script>-->
+<?php $md = get_moneda_defecto()?>
 <br>
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-3">
-            <label>Total Venta Credito: <?= MONEDA ?> <span id="total_venta"><?=number_format($credito_totales->total_venta, 2)?></span></label>
+            <label>Total Venta Credito: <?= $md->simbolo ?> <span id="total_venta"><?=number_format($credito_totales->total_venta, 2)?></span></label>
         </div>
         <div class="col-md-3">
-            <label>Total Abonado: <?= MONEDA ?> <span id="total_abonado"><?=number_format($credito_totales->total_abonado, 2)?></span></label>
+            <label>Total Abonado: <?= $md->simbolo ?> <span id="total_abonado"><?=number_format($credito_totales->total_abonado, 2)?></span></label>
         </div>
         <div class="col-md-3">
-            <label>Total Deuda: <?= MONEDA ?> <span id="total_deuda"><?=number_format($credito_totales->total_deuda, 2)?></span></label>
+            <label>Total Deuda: <?= $md->simbolo ?> <span id="total_deuda"><?=number_format($credito_totales->total_deuda, 2)?></span></label>
         </div>
     </div>
     <div class="table-responsive">
@@ -262,7 +263,7 @@
         var id= $('#val'+i).val();
         //alert("ida: "+id+" i: "+i+" id venta: "+idVenta+" monto: "+montodescontar)
         $.ajax({
-            url: '<?= base_url()?>venta/pagoCuotaCredito',
+            url: 'venta/pagoCuotaCredito',
             type: 'post',
             data: {'idCuota': id, 'idVenta':idVenta, 'montodescontar':montodescontar},
             success: function (data) {

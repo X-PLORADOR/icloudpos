@@ -155,20 +155,20 @@
     var condicionPago = $("#condicion_pago");
     var Ganancia = $("#ganancias");
 
-    <?php  if($numero_dias==31){?>
+    <?php  if($numero_dias == 31){?>
     var chartday = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10], [11, 11],
         [12, 12], [13, 13], [14, 14], [15, 15], [16, 16], [17, 17], [18, 18], [19, 19], [20, 20], [21, 21], [22, 22], [23, 23], [24, 24], [25, 25],
         [26, 26], [27, 27], [28, 28], [29, 29], [30, 30], [31, 31]];
-    <?php  }elseif($numero_dias==30){ ?>
+    <?php  }elseif($numero_dias == 30){ ?>
     var chartday = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10], [11, 11],
         [12, 12], [13, 13], [14, 14], [15, 15], [16, 16], [17, 17], [18, 18], [19, 19], [20, 20], [21, 21], [22, 22], [23, 23], [24, 24], [25, 25],
         [26, 26], [27, 27], [28, 28], [29, 29], [30, 30]];
 
-    <?php  }elseif($numero_dias==29){ ?>
+    <?php  }elseif($numero_dias == 29){ ?>
     var chartday = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10], [11, 11],
         [12, 12], [13, 13], [14, 14], [15, 15], [16, 16], [17, 17], [18, 18], [19, 19], [20, 20], [21, 21], [22, 22], [23, 23], [24, 24], [25, 25],
         [26, 26], [27, 27], [28, 28], [29, 29]];
-    <?php  }elseif($numero_dias==28){ ?>
+    <?php  }elseif($numero_dias == 28){ ?>
     var chartday = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9], [10, 10], [11, 11],
         [12, 12], [13, 13], [14, 14], [15, 15], [16, 16], [17, 17], [18, 18], [19, 19], [20, 20], [21, 21], [22, 22], [23, 23], [24, 24], [25, 25],
         [26, 26], [27, 27], [28, 28]];
@@ -190,19 +190,19 @@
             dataType: 'JSON',
             success: function (data) {
                 console.log(data);
-
+                <?php $md = get_moneda_defecto()?>
                 //////////////aqui se colocan los totales del cuadro 1/////////
                 $("#borrar_totales").remove()
                 var totales = ''
                 totales += '<div id="borrar_totales"><div class="row"><div  class="col-md-3"><strong> Ventas Totales: </strong> </div><div  class="col-md-4">'
-                totales += '<strong><?php echo MONEDA; ?> '
+                totales += '<strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['total_venta'] == null) {
                     totales += ' 0'
                 } else {
                     totales += '' + data.totales[0]['total_venta'] + ''
                 }
                 totales += '</strong> </div>'
-                totales += '<div  class="col-md-2"><strong> Ganancias: </strong> </div><div  class="col-md-2"><strong><?php echo MONEDA; ?> '
+                totales += '<div  class="col-md-2"><strong> Ganancias: </strong> </div><div  class="col-md-2"><strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['total_utilidad'] == null) {
                     totales += '0'
                 } else {
@@ -217,7 +217,7 @@
                 }
                 totales += '</strong> </div>'
 
-                totales += '<div  class="col-md-2"><strong> Margen de Ganancia Promedio: </strong> </div><div  class="col-md-2"><strong><?php echo MONEDA; ?> '
+                totales += '<div  class="col-md-2"><strong> Margen de Ganancia Promedio: </strong> </div><div  class="col-md-2"><strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['numero_venta'] == null) {
                     totales += '0'
                 } else {
@@ -225,7 +225,7 @@
                 }
                 totales += '</strong> </div></div>'
 
-                totales += '<div class="row"><div  class="col-md-3"><strong> Venta Promedio: </strong> </div><div  class="col-md-1"><strong><?php echo MONEDA; ?> '
+                totales += '<div class="row"><div  class="col-md-3"><strong> Venta Promedio: </strong> </div><div  class="col-md-1"><strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['total_utilidad'] == null) {
                     totales += '0'
                 } else {
@@ -268,7 +268,7 @@
                     ventaspormes += '' + ejex[i][1] + ''
                     ventaspormes += '</td>'
                     ventaspormes += '<td>'
-                    ventaspormes += '<?php echo MONEDA; ?> ' + data.venta[i][1] + ''
+                    ventaspormes += '<?php echo $md->simbolo; ?> ' + data.venta[i][1] + ''
                     ventaspormes += '</td>'
                     ventaspormes += '</tr>'
 
@@ -277,7 +277,7 @@
                     gananciaspormes += '' + ejex[i][1] + ''
                     gananciaspormes += '</td>'
                     gananciaspormes += '<td>'
-                    gananciaspormes += '<?php echo MONEDA; ?> ' + data.utilidad[i][1] + ''
+                    gananciaspormes += '<?php echo $md->simbolo; ?> ' + data.utilidad[i][1] + ''
                     gananciaspormes += '</td>'
                     gananciaspormes += '</tr>'
 
@@ -349,7 +349,7 @@
                 ventaspormes += '<strong>Total</strong>'
                 ventaspormes += '</td>'
                 ventaspormes += '<td>'
-                ventaspormes += '<strong><?php echo MONEDA; ?> '
+                ventaspormes += '<strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['total_venta'] == null) {
                     ventaspormes += '0'
                 } else {
@@ -367,7 +367,7 @@
                 gananciaspormes += '<strong>Total</strong>'
                 gananciaspormes += '</td>'
                 gananciaspormes += '<td>'
-                gananciaspormes += '<strong><?php echo MONEDA; ?> '
+                gananciaspormes += '<strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['total_utilidad'] == null) {
                     gananciaspormes += '0'
                 } else {
@@ -468,7 +468,7 @@
                             $('#chart-tooltip').remove();
                             var x = item.datapoint[0], y = item.datapoint[1];
 
-                            ttlabel = '<?php echo MONEDA; ?><strong>' + y + '</strong> ';
+                            ttlabel = '<?php echo $md->simbolo; ?><strong>' + y + '</strong> ';
 
                             setTimeout(function () {
                                 $('<div id="chart-tooltip" class="chart-tooltip">' + ttlabel + '</div>')
@@ -561,7 +561,7 @@
                             $('#chartCondicion').remove();
                             var x = item.datapoint[0], y = item.datapoint[1];
 
-                            ttlabel = '<?php echo MONEDA; ?><strong>' + y + '</strong> ';
+                            ttlabel = '<?php echo $md->simbolo; ?><strong>' + y + '</strong> ';
 
                             setTimeout(function () {
                                 $('<div id="chartCondicion" class="chart-tooltip">' + ttlabel + '</div>')
@@ -632,7 +632,7 @@
                             $('#toltip_ganancia').remove();
                             var x = item.datapoint[0], y = item.datapoint[1];
 
-                            ttlabel = '<?php echo MONEDA; ?><strong>' + y + '</strong> ';
+                            ttlabel = '<?php echo $md->simbolo; ?><strong>' + y + '</strong> ';
 
                             setTimeout(function () {
                                 $('<div id="toltip_ganancia" class="chart-tooltip">' + ttlabel + '</div>')
@@ -687,9 +687,9 @@
         $("#anio").text($("#anno").val())
         grafico()
 
-        $('.fecha').on('change', function(){
-            desde=$('#fecha_desde').val()
-            hasta=$('#fecha_hasta').val()
+        $('.fecha').on('change', function () {
+            desde = $('#fecha_desde').val()
+            hasta = $('#fecha_hasta').val()
             periodo = 'fecha'
             porfecha()
             //grafico()
@@ -710,60 +710,60 @@
             success: function (data) {
 
 
-                var validar=false;
-                var arreglototalventa= new Array();
-                var arreglototalutilidad= new Array();
-                var ejexdefecha= new Array();
-                var contador=1
+                var validar = false;
+                var arreglototalventa = new Array();
+                var arreglototalutilidad = new Array();
+                var ejexdefecha = new Array();
+                var contador = 1
 
                 //// data.fecha es el rango de fechas seleccionadas
 
-                for(var i=0; i< data.fecha.length; i++){
+                for (var i = 0; i < data.fecha.length; i++) {
                     var newData = new Array();
-                    for(var j=0; j< data.venta.length; j++){
+                    for (var j = 0; j < data.venta.length; j++) {
 
-                    if(data.venta[j]['fecha']==data.fecha[i]){
+                        if (data.venta[j]['fecha'] == data.fecha[i]) {
 
-                        //// si es igual al una de el rango de fechas se almacena la venta y la utilidad
-                        var eje= new Array();
-                            eje[0]= contador
-                            eje[1]=data.venta[j]['fecha']
+                            //// si es igual al una de el rango de fechas se almacena la venta y la utilidad
+                            var eje = new Array();
+                            eje[0] = contador
+                            eje[1] = data.venta[j]['fecha']
                             /// primero guardo las ventas
                             newData[0] = contador
                             newData[1] = data.venta[j]['total_venta'];
-                        arreglototalventa.push(newData);
-                        //// luego guardo las utilidades
-                        var newData = new Array();
-                        newData[0] = contador
-                        newData[1] = data.venta[j]['total_utilidad'];
-                        arreglototalutilidad.push(newData)
+                            arreglototalventa.push(newData);
+                            //// luego guardo las utilidades
+                            var newData = new Array();
+                            newData[0] = contador
+                            newData[1] = data.venta[j]['total_utilidad'];
+                            arreglototalutilidad.push(newData)
 
-                        validar=true;
-                        contador++
-                        ejexdefecha.push(eje);
+                            validar = true;
+                            contador++
+                            ejexdefecha.push(eje);
 
+                        }
                     }
-                    }
-                    if(validar==false){
-                        var eje= new Array();
-                        eje[0]= contador
-                        eje[1]=data.fecha[i]
+                    if (validar == false) {
+                        var eje = new Array();
+                        eje[0] = contador
+                        eje[1] = data.fecha[i]
                         ejexdefecha.push(eje);
-                        newData[0] =contador
-                        newData[1] = 0;
-                        arreglototalventa.push(newData);
-
-                        var newData = new Array();
                         newData[0] = contador
                         newData[1] = 0;
+                        arreglototalventa.push(newData);
+
+                        var newData = new Array();
+                        newData[0] = contador
+                        newData[1] = 0;
                         arreglototalutilidad.push(newData)
                         contador++
 
                     }
-                    validar=false;
+                    validar = false;
                 }
 
-                ejex=ejexdefecha
+                ejex = ejexdefecha
 
                 var dataset = [{
                     "label": "Venta",
@@ -833,7 +833,7 @@
                             $('#chart-tooltip').remove();
                             var x = item.datapoint[0], y = item.datapoint[1];
 
-                            ttlabel = '<?php echo MONEDA; ?><strong>' + y + '</strong> ';
+                            ttlabel = '<?php echo $md->simbolo; ?><strong>' + y + '</strong> ';
 
                             setTimeout(function () {
                                 $('<div id="chart-tooltip" class="chart-tooltip">' + ttlabel + '</div>')
@@ -854,14 +854,14 @@
                 $("#borrar_totales").remove()
                 var totales = ''
                 totales += '<div id="borrar_totales"><div class="row"><div  class="col-md-3"><strong> Ventas Totales: </strong> </div><div  class="col-md-4">'
-                totales += '<strong><?php echo MONEDA; ?> '
+                totales += '<strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['total_venta'] == null) {
                     totales += ' 0'
                 } else {
                     totales += '' + data.totales[0]['total_venta'] + ''
                 }
                 totales += '</strong> </div>'
-                totales += '<div  class="col-md-2"><strong> Ganancias: </strong> </div><div  class="col-md-2"><strong><?php echo MONEDA; ?> '
+                totales += '<div  class="col-md-2"><strong> Ganancias: </strong> </div><div  class="col-md-2"><strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['total_utilidad'] == null) {
                     totales += '0'
                 } else {
@@ -876,7 +876,7 @@
                 }
                 totales += '</strong> </div>'
 
-                totales += '<div  class="col-md-2"><strong> Margen de Ganancia Promedio: </strong> </div><div  class="col-md-2"><strong><?php echo MONEDA; ?> '
+                totales += '<div  class="col-md-2"><strong> Margen de Ganancia Promedio: </strong> </div><div  class="col-md-2"><strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['numero_venta'] == null) {
                     totales += '0'
                 } else {
@@ -884,7 +884,7 @@
                 }
                 totales += '</strong> </div></div>'
 
-                totales += '<div class="row"><div  class="col-md-3"><strong> Venta Promedio: </strong> </div><div  class="col-md-1"><strong><?php echo MONEDA; ?> '
+                totales += '<div class="row"><div  class="col-md-3"><strong> Venta Promedio: </strong> </div><div  class="col-md-1"><strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['total_utilidad'] == null) {
                     totales += '0'
                 } else {
@@ -927,7 +927,7 @@
                     ventaspormes += '' + ejex[i][1] + ''
                     ventaspormes += '</td>'
                     ventaspormes += '<td>'
-                    ventaspormes += '<?php echo MONEDA; ?> ' + arreglototalventa[i][1] + ''
+                    ventaspormes += '<?php echo $md->simbolo; ?> ' + arreglototalventa[i][1] + ''
                     ventaspormes += '</td>'
                     ventaspormes += '</tr>'
 
@@ -936,7 +936,7 @@
                     gananciaspormes += '' + ejex[i][1] + ''
                     gananciaspormes += '</td>'
                     gananciaspormes += '<td>'
-                    gananciaspormes += '<?php echo MONEDA; ?> ' + arreglototalutilidad[i][1] + ''
+                    gananciaspormes += '<?php echo $md->simbolo; ?> ' + arreglototalutilidad[i][1] + ''
                     gananciaspormes += '</td>'
                     gananciaspormes += '</tr>'
 
@@ -1008,7 +1008,7 @@
                 ventaspormes += '<strong>Total</strong>'
                 ventaspormes += '</td>'
                 ventaspormes += '<td>'
-                ventaspormes += '<strong><?php echo MONEDA; ?> '
+                ventaspormes += '<strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['total_venta'] == null) {
                     ventaspormes += '0'
                 } else {
@@ -1026,7 +1026,7 @@
                 gananciaspormes += '<strong>Total</strong>'
                 gananciaspormes += '</td>'
                 gananciaspormes += '<td>'
-                gananciaspormes += '<strong><?php echo MONEDA; ?> '
+                gananciaspormes += '<strong><?php echo $md->simbolo; ?> '
                 if (data.totales[0]['total_utilidad'] == null) {
                     gananciaspormes += '0'
                 } else {
@@ -1058,8 +1058,8 @@
 
 
                 /////////grafico 3 /////////////////////////////////////////
-                var validar=false;
-                var contador=1
+                var validar = false;
+                var contador = 1
                 var grafico3 = new Array()
                 if (data.tabla_condiciones.length > 0) {
 
@@ -1072,22 +1072,22 @@
                         var grafico = {}
                         grafico.label = tabla_condiciones[i]['nombre_condiciones']
                         arregloDataGrafico3 = new Array();
-                        contador=1
-                        for(var p=0; p< data.fecha.length; p++) {
+                        contador = 1
+                        for (var p = 0; p < data.fecha.length; p++) {
                             for (var y = 0; y < condicion_pago.length; y++) {
 
 
                                 if (condicion_pago[y]['condicion_pago'] == tabla_condiciones[i]['id_condiciones']
-                                && condicion_pago[y]['fecha']==data.fecha[p]) {
+                                    && condicion_pago[y]['fecha'] == data.fecha[p]) {
                                     var newData = new Array();
                                     newData[0] = contador;
                                     newData[1] = condicion_pago[y]['total_venta'];
                                     arregloDataGrafico3.push(newData);
                                     contador++
-                                    validar=true
+                                    validar = true
                                 }
                             }
-                            if(validar==false){
+                            if (validar == false) {
                                 var newData = new Array();
                                 newData[0] = contador;
                                 newData[1] = 0;
@@ -1095,7 +1095,7 @@
                                 contador++
 
                             }
-                            validar=false;
+                            validar = false;
 
                         }
 
@@ -1155,7 +1155,7 @@
                             $('#chartCondicion').remove();
                             var x = item.datapoint[0], y = item.datapoint[1];
 
-                            ttlabel = '<?php echo MONEDA; ?><strong>' + y + '</strong> ';
+                            ttlabel = '<?php echo $md->simbolo; ?><strong>' + y + '</strong> ';
 
                             setTimeout(function () {
                                 $('<div id="chartCondicion" class="chart-tooltip">' + ttlabel + '</div>')
@@ -1226,7 +1226,7 @@
                             $('#toltip_ganancia').remove();
                             var x = item.datapoint[0], y = item.datapoint[1];
 
-                            ttlabel = '<?php echo MONEDA; ?><strong>' + y + '</strong> ';
+                            ttlabel = '<?php echo $md->simbolo; ?><strong>' + y + '</strong> ';
 
                             setTimeout(function () {
                                 $('<div id="toltip_ganancia" class="chart-tooltip">' + ttlabel + '</div>')

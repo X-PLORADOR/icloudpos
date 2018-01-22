@@ -1,8 +1,9 @@
- <br>
+<?php $md = get_moneda_defecto()?>
+<br>
     <div class="row">
         <div class="col-md-10"></div>
         <div class="col-md-2">
-            <label>Total: <?= MONEDA ?> <span id="total"><?=number_format($gastos_totales->total, 2)?></span></label>
+            <label>Total: <?= $md->simbolo ?> <span id="total"><?=number_format($gastos_totales->total, 2)?></span></label>
         </div>
     </div>
 <div class="table-responsive">

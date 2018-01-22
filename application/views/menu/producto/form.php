@@ -493,7 +493,7 @@
 
                 </div>
 
-
+<?php $md = get_moneda_defecto() ?>
                 <div class="tab-pane" role="tabpanel" id="precios" role="tabpanel">
 
                     <?php //if ($this->session->userdata('PRECIO_DE_VENTA') == "MANUAL") { ?>
@@ -535,7 +535,7 @@
                                     <div class="input-prepend input-append">
                                         <div class="input-group">
                                             <div
-                                                class="input-group-addon tipo_tasa_contable"><?php echo isset($simbolo) ? $simbolo : MONEDA ?></div>
+                                                class="input-group-addon tipo_tasa_contable"><?php echo isset($simbolo) ? $simbolo : $md->simbolo ?></div>
                                             <input type="number" name="contable_costo" id="contable_costo"
                                                    class='cho form-control'
                                                    value="<?php echo (isset($contable_costo)) ? number_format($contable_costo, 2, '.', '') : '0.00' ?>"/>
@@ -622,17 +622,16 @@
                             $simbolo = "";
 
                             foreach ($monedas as $mon) {
-
-                                if ($mon['nombre'] == "Dolares") {
-                                    $simbolo_cambio_tasa = $mon['simbolo'];
-                                    $cambio_soles_tasa = $mon['tasa_soles'];
-
-                                } elseif ($mon['nombre'] == "Soles") {
+                                if($mon['id_moneda'] == MONEDA_DEFECTO){
                                     $moneda_local_simbolo = $mon['simbolo'];
                                     $moneda_local = $mon['id_moneda'];
                                     $nombre = $mon['nombre'];
                                     $tasa = $mon['tasa_soles'];
                                     $simbolo = $mon['simbolo'];
+                                }
+                                else {
+                                    $simbolo_cambio_tasa = $mon['simbolo'];
+                                    $cambio_soles_tasa = $mon['tasa_soles'];
                                 }
                             }
                             $i = 0;
@@ -1195,10 +1194,10 @@
 
             //alert(tasa.attr('data-value-s'));
 
+            guardarproducto();
 
-            if (tasa.val() == '0.00' && tasa_contable.val() == '0.00') {
+            /*if (tasa.val() == '0.00' && tasa_contable.val() == '0.00') {
 
-                guardarproducto();
             }
             else {
 
@@ -1213,17 +1212,17 @@
 
                     $("#confirm_cu").modal('show');
                 }
-            }
+            }*/
 
 
         }
 
         function guardarproducto() {
 
-            if ($("#tasa_convert").val() != '0.00' || $("#tasa_convert_contable").val() != '0.00') {
-                $("#tasa_convert").val($("#tasa_input").val());
-                $("#tasa_convert_contable").val($("#tasa_input").val());
-            }
+//            if ($("#tasa_convert").val() != '0.00' || $("#tasa_convert_contable").val() != '0.00') {
+//                $("#tasa_convert").val($("#tasa_input").val());
+//                $("#tasa_convert_contable").val($("#tasa_input").val());
+//            }
 
             var unidad_min_index = $('.unidades').length - 1;
             if ($("#unidad\\[" + unidad_min_index + "\\]").val() > 1) {
@@ -1241,7 +1240,7 @@
             }
 
 
-            $("#confirm_cu").modal('hide');
+//            $("#confirm_cu").modal('hide');
 
             var nombre = $("#producto_nombre");
             var producto_impuesto = $("#producto_impuesto");

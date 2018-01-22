@@ -24,6 +24,7 @@ class cajas_mov_model extends CI_Model
 
         $this->db->select('
             caja_movimiento.*,
+            moneda.*,
             usuario.nombre as usuario_nombre,
             caja.moneda_id as moneda_id,
             local.local_nombre as local_nombre
@@ -31,6 +32,7 @@ class cajas_mov_model extends CI_Model
             ->from('caja_movimiento')
             ->join('caja_desglose', 'caja_desglose.id = caja_movimiento.caja_desglose_id')
             ->join('caja', 'caja.id = caja_desglose.caja_id')
+            ->join('moneda', 'moneda.id_moneda = caja.moneda_id')
             ->join('local', 'caja.local_id = local.int_local_id')
             ->join('usuario', 'usuario.nUsuCodigo = caja_movimiento.usuario_id')
             ->where('caja_movimiento.caja_desglose_id', $cuenta_id)

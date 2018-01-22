@@ -1,7 +1,9 @@
 <?php $ruta = base_url(); ?>
 
 <style>
-   table tr { text-align: center; }
+    table tr {
+        text-align: center;
+    }
 </style>
 <ul class="breadcrumb breadcrumb-top">
     <li>Monedas</li>
@@ -25,7 +27,7 @@ echo validation_errors('<div class="alert alert-danger alert-dismissable"">', "<
     <!-- Progress Bars Wizard Title -->
 
 
-    <a class="btn btn-primary" onclick="agregar();">
+    <a class="btn btn-primary" onclick="agregar();" style="display: none;">
         <i class="fa fa-plus "> Nueva</i>
     </a>
     <br>
@@ -39,8 +41,8 @@ echo validation_errors('<div class="alert alert-danger alert-dismissable"">', "<
                 <th>Nombre</th>
                 <th>Simbolo</th>
                 <th>Pais</th>
-                <th>Tasa Soles</th>
-                <th>Operacion</th>
+                <th>Tasa <?= $moneda_defecto->nombre ?></th>
+                <th>Estado</th>
 
                 <th class="desktop">Acciones</th>
 
@@ -53,37 +55,33 @@ echo validation_errors('<div class="alert alert-danger alert-dismissable"">', "<
                     ?>
                     <tr>
 
-                        <td class="center"><?= $moneda['id_moneda'] ?></td>
-                        <td><?= $moneda['nombre'] ?></td>
-                        <td><?= $moneda['simbolo'] ?></td>
-                        <td><?= $moneda['pais'] ?></td>
-                        <td><?= $moneda['tasa_soles'] ?></td>
-                        <td><?= $moneda['ope_tasa'] ?></td>
+                        <td class="center"><?= $moneda->id_moneda ?></td>
+                        <td><?= $moneda->nombre ?></td>
+                        <td><?= $moneda->simbolo ?></td>
+                        <td><?= $moneda->pais ?></td>
+                        <td><?= $moneda->id_moneda != MONEDA_DEFECTO ? $moneda_defecto->simbolo . ' ' . $moneda->tasa_soles : '-' ?></td>
+                        <td><?= $moneda->status_moneda == 1 ? 'ACTIVA' : 'INACTIVA' ?></td>
 
 
                         <td class="center">
                             <div class="btn-group">
-                            <?php
-                            if ($moneda['id_moneda'] != "1029")
-                            {
-                            echo '<a class="btn btn-default" data-toggle="tooltip"
-                                            title="Editar" data-original-title="fa fa-comment-o"
-                                            href="#" onclick="editar(' . $moneda['id_moneda'] . ');">'; ?>
-                              
-                            <i class="fa fa-edit"></i>
-                            </a>
-                            
-                            <?php } 
-                                  if ($moneda['id_moneda'] != "1029")
-                                  {
-                                  	echo '<a class="btn btn-default" data-toggle="tooltip"
+                                <a class="btn btn-default" data-toggle="tooltip"
+                                   title="Editar" data-original-title="fa fa-comment-o"
+                                   href="#" onclick="editar(<?= $moneda->id_moneda ?>);">
+
+                                    <i class="fa fa-edit"></i>
+                                </a>
+
+                                <?php
+                                if ($moneda->id_moneda != MONEDA_DEFECTO && FALSE) {
+                                    echo '<a class="btn btn-default" data-toggle="tooltip"
                                      title="Eliminar" data-original-title="fa fa-comment-o"
-                                     onclick="borrar(' . $moneda['id_moneda'] . ',\'' . $moneda['nombre'] . '\');">'; 
-                                
-                               ?>   
-                            <i class="fa fa-trash-o"></i>
-                            </a>
-                            <?php } ?>
+                                     onclick="borrar(' . $moneda->id_moneda . ',\'' . $moneda->nombre . '\');">';
+
+                                    ?>
+                                    <i class="fa fa-trash-o"></i>
+                                    </a>
+                                <?php } ?>
                             </div>
                         </td>
                     </tr>
@@ -129,7 +127,7 @@ echo validation_errors('<div class="alert alert-danger alert-dismissable"">', "<
 
     function editar(id) {
 
-        $("#agregar").load('<?= $ruta ?>monedas/form/'+id);
+        $("#agregar").load('<?= $ruta ?>monedas/form/' + id);
         $('#agregar').modal('show');
     }
 
@@ -140,13 +138,13 @@ echo validation_errors('<div class="alert alert-danger alert-dismissable"">', "<
     }
 
     var marca = {
-        ajaxgrupo : function(){
-            return  $.ajax({
-                url:'<?= base_url()?>monedas'
+        ajaxgrupo: function () {
+            return $.ajax({
+                url: '<?= base_url()?>monedas'
 
             })
         },
-        guardar : function () {
+        guardar: function () {
             if ($("#nombre_moneda").val() == '') {
                 var growlType = 'warning';
 
@@ -215,9 +213,9 @@ echo validation_errors('<div class="alert alert-danger alert-dismissable"">', "<
             App.formSubmitAjax($("#formagregar").attr('action'), this.ajaxgrupo, 'agregar', 'formagregar');
         }
     }
-    function eliminar(){
+    function eliminar() {
 
-        App.formSubmitAjax($("#formeliminar").attr('action'), marca.ajaxgrupo, 'borrar', 'formeliminar' );
+        App.formSubmitAjax($("#formeliminar").attr('action'), marca.ajaxgrupo, 'borrar', 'formeliminar');
 
     }
 </script>
@@ -253,5 +251,7 @@ echo validation_errors('<div class="alert alert-danger alert-dismissable"">', "<
 </div>
 <!-- /.modal-dialog -->
 </div>
-<script src="<?php echo $ruta?>recursos/js/pages/tablesDatatables.js"></script>
-<script>$(function(){ TablesDatatables.init(); });</script>
+<script src="<?php echo $ruta ?>recursos/js/pages/tablesDatatables.js"></script>
+<script>$(function () {
+        TablesDatatables.init(0, 'asc');
+    });</script>

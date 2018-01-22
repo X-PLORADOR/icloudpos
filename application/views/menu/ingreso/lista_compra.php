@@ -1,15 +1,16 @@
+    <?php $md = get_moneda_defecto()?>
 <?php if(count($ingresos) > 0):?>
    <br>
     <div class="row">
         <div class="col-md-6"></div>
         <div class="col-md-2">
-            <label>Subtotal: <?= MONEDA ?> <span id="subtotal"><?=number_format($ingreso_totales->subtotal, 2)?></span></label>
+            <label>Subtotal: <?= $md->simbolo ?> <span id="subtotal"><?=number_format($ingreso_totales->subtotal, 2)?></span></label>
         </div>
         <div class="col-md-2">
-            <label>IGV: <?= MONEDA ?> <span id="impuesto"><?=number_format($ingreso_totales->impuesto, 2)?></span></label>
+            <label>IGV: <?= $md->simbolo ?> <span id="impuesto"><?=number_format($ingreso_totales->impuesto, 2)?></span></label>
         </div>
         <div class="col-md-2">
-            <label>Total: <?= MONEDA ?> <span id="total"><?=number_format($ingreso_totales->total, 2)?></span></label>
+            <label>Total: <?= $md->simbolo ?> <span id="total"><?=number_format($ingreso_totales->total, 2)?></span></label>
         </div>
     </div>
      <div class="table-responsive" id="tabla">

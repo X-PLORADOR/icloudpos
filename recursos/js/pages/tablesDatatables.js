@@ -7,7 +7,7 @@
 var TablesDatatables = function() {
 
     return {
-        init: function(order) {
+        init: function(order, order_desc = 'desc') {
             oder_col = order || 0;
             /* Initialize Bootstrap Datatables Integration */
             App.datatables();
@@ -18,7 +18,7 @@ var TablesDatatables = function() {
               //  "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1, 5 ] } ],
                 "iDisplayLength": 10,
                 "aLengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]],
-                "order": [[ oder_col, "desc" ]],
+                "order": [[ oder_col, order_desc ]],
                "scrollY":        "300px",
                "scrollX": true,
                "scrollCollapse": true,

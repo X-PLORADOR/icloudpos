@@ -24,7 +24,7 @@ class monedas_model extends CI_Model
 
     function get_moneda_default()
     {
-        return $this->db->get_where($this->tabla, array('nombre' => 'Soles', 'tasa_soles' => 0, 'status_moneda' => 1))->row();
+        return $this->db->get_where($this->tabla, array('id_moneda' => MONEDA_DEFECTO, 'status_moneda' => 1))->row();
     }
 
     function get_monedas_activas()

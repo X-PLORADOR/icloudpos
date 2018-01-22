@@ -26,7 +26,7 @@
                         <td><?= $mov->nombre ?></td>
                         <td><?= $mov->tipo ?></td>
                         <td><?= $mov->IO == 2 ? 'Salida' : 'Entrada' ?></td>
-                        <td><?= $mov->moneda_id == 1 ? MONEDA : '$'?> <?= number_format($mov->monto, 2) ?></td>
+                        <td><?= $mov->simbolo?> <?= number_format($mov->monto, 2) ?></td>
                         <td><?= $mov->ref_id ?></td>
                         <td>
                             <a class="btn_confirmar_saldo btn btn-primary"

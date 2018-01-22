@@ -64,8 +64,8 @@ echo validation_errors('<div class="alert alert-danger alert-dismissable"">', "<
                         <td class="center"><?= $bancos['banco_id'] ?></td>
                         <td><?= $bancos['banco_nombre'] ?></td>
                         <td><?= $bancos['banco_numero_cuenta'] ?></td>
-                        <td><?= $bancos['saldo'] ?></td>
-                        <td><?= $bancos['descripcion'] ?> | <?= $bancos['moneda_id'] == 1 ? 'SOLES' : "DOLARES" ?></td>
+                        <td><?= $bancos['simbolo'].' '.$bancos['saldo'] ?></td>
+                        <td><?= $bancos['descripcion'] ?> | <?= $bancos['nombre'] ?></td>
                         <td><?= $bancos['banco_titular'] ?></td>
 
                         <td class="center">

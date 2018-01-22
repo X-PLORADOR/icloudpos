@@ -36,9 +36,10 @@
                                     <option <?= $caja->id == $caja_actual->id ? 'selected' : '' ?>
                                         value="<?= $caja->id ?>"
                                         data-moneda_id="<?= $caja->moneda_id ?>"
+                                        data-simbolo="<?= $caja->simbolo ?>"
                                     >
                                     <?= $caja->local_nombre ?>
-                                    <?= $caja->moneda_id == 1 ? ' | SOLES' : ' | DOLARES' ?>
+                                    <?= ' | '.$caja->nombre ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -142,6 +143,7 @@
     cajas.push({
         'id': '<?=$caja->id?>',
         'moneda_id': '<?=$caja->moneda_id?>'
+        'siimbolo': '<?=$caja->simbolo?>'
     });
     <?php endforeach; ?>
 
@@ -168,17 +170,6 @@
                 if (cuentas[i].caja_id == $(this).val()) {
                     cuenta_id.append('<option value="' + cuentas[i].id + '">' + cuentas[i].descripcion + '</option>');
                 }
-            }
-
-            if ($("#caja_id").val() != $(this).val()) {
-                if ($('#caja_id').attr('data-moneda_id') == 1)
-                    $(".tipo_moneda").html('$');
-                else
-                    $(".tipo_moneda").html('S/.');
-                $("#moneda_tasa").show();
-            }
-            else {
-                $("#moneda_tasa").hide();
             }
 
         });

@@ -51,8 +51,9 @@ define('COMPRA',		'COMPRA');
 define('PESABLE',		'PESABLE');
 define('MEDIBLE',		'MEDIBLE');
 
-define('MONEDA',		'S/.');
-define('DOLAR',		'$');
+define('MONEDA_DEFECTO', '1029');
+//define('MONEDA',		'S/.');
+//define('DOLAR',		'$');
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
 

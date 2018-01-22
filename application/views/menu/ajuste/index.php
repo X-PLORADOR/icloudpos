@@ -1,3 +1,4 @@
+<?php $md = get_moneda_defecto()?>
 <ul class="breadcrumb breadcrumb-top">
     <li>Ajuste de Inventario</li>
     <li><a href="">Operaciones de Entrada/Salida</a></li>
@@ -9,7 +10,7 @@
     <div class="block">
 
         <!--CAMPOS HIDDEN PARA GUARDAR OPCIONES NECESARIAS-->
-        <input type="hidden" id="moneda_simbolo" value="<?= MONEDA ?>">
+        <input type="hidden" id="moneda_simbolo" value="<?= $md->simbolo ?>">
 
         <div class="row">
 
@@ -140,7 +141,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="input-group">
-                                    <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                                    <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                                     <input type="text" style="text-align: right;"
                                            class='form-control'
                                            data-index="0"
@@ -156,7 +157,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="input-group">
-                                    <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                                    <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                                     <input type="text" style="text-align: right;"
                                            class='form-control'
                                            name="importe" id="importe" value="0.00"
@@ -229,7 +230,7 @@
 
                     <div class="col-md-7">
                         <div class="input-group">
-                            <div class="input-group-addon"><?= MONEDA ?></div>
+                            <div class="input-group-addon"><?= $md->simbolo ?></div>
                             <input type="text" style="text-align: right;"
                                    class='form-control'
                                    name="tasa" id="tasa" value="0.00"
@@ -357,7 +358,7 @@
 
                     <div class="col-md-7">
                         <div class="input-group">
-                            <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                            <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                             <input type="text" style="text-align: right;"
                                    class='form-control'
                                    name="total_importe" id="total_importe" value="0.00"

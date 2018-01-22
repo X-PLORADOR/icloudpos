@@ -107,7 +107,8 @@ class cajas extends MY_Controller
 
         $data['locales'] = $this->local_model->get_all();
 
-        $data['cajas'] = $this->db->get_where('caja', array('estado' => 1))->result();
+        $data['cajas'] = $this->db->join('moneda', 'moneda.id_moneda = caja.moneda_id')
+            ->get_where('caja', array('estado' => 1))->result();
         $data['caja_cuentas'] = $this->db->get_where('caja_desglose', array('estado' => 1))->result();
 
         $this->load->view('menu/cajas/form_ajustar_cuenta', $data);
@@ -139,14 +140,15 @@ class cajas extends MY_Controller
         $data['caja_id'] = $caja_id;
         $data['caja_actual'] = $this->cajas_model->get($caja_id);
 
-        $data['cajas'] = $this->db->get_where('caja', array('estado' => 1))->result();
+        $data['cajas'] = $this->db->join('moneda', 'moneda.id_moneda = caja.moneda_id')
+            ->get_where('caja', array('estado' => 1))->result();
         $data['caja_cuentas'] = $this->db->get_where('caja_desglose', array('estado' => 1))->result();
 
         $data['retenciones'] = $this->db->get_where('caja_movimiento', array(
-            'caja_desglose_id'=>$id,
-            'medio_pago'=>7,
-            'operacion'=>'COBRANZA',
-            'movimiento'=>'INGRESO'
+            'caja_desglose_id' => $id,
+            'medio_pago' => 7,
+            'operacion' => 'COBRANZA',
+            'movimiento' => 'INGRESO'
         ))->result();
 
         $data['year'] = $this->db->query("
@@ -176,8 +178,8 @@ class cajas extends MY_Controller
         $data['cuenta'] = $this->cajas_model->get_cuenta($id);
 
         $params = array(
-            'fecha_ini'=>date('Y-m-d H:i:s', strtotime($this->input->post('fecha_ini'). "00:00:00")),
-            'fecha_fin'=>date('Y-m-d H:i:s', strtotime($this->input->post('fecha_fin'). "23:59:59")),
+            'fecha_ini' => date('Y-m-d H:i:s', strtotime($this->input->post('fecha_ini') . "00:00:00")),
+            'fecha_fin' => date('Y-m-d H:i:s', strtotime($this->input->post('fecha_fin') . "23:59:59")),
         );
 
         $data['cuenta_movimientos'] = $this->cajas_mov_model->get_movimientos_today($id, $params);
@@ -189,15 +191,16 @@ class cajas extends MY_Controller
     {
         $data['cuenta'] = $this->cajas_model->get_cuenta($id);
 
-        $data['saldos_pendientes'] = $this->db->select('caja_pendiente.*, caja.moneda_id, usuario.nombre')
+        $data['saldos_pendientes'] = $this->db->select('caja_pendiente.*, moneda.*, caja.moneda_id, usuario.nombre')
             ->from('caja_pendiente')
             ->join('usuario', 'usuario.nUsuCodigo = caja_pendiente.usuario_id')
             ->join('caja_desglose', 'caja_desglose.id = caja_pendiente.caja_desglose_id')
             ->join('caja', 'caja.id = caja_desglose.caja_id')
+            ->join('moneda', 'moneda.id_moneda = caja.moneda_id')
             ->where(array(
-            'caja_pendiente.estado'=>0,
-            'caja_desglose_id'=>$id
-        ))->get()->result();
+                'caja_pendiente.estado' => 0,
+                'caja_desglose_id' => $id
+            ))->get()->result();
 
         $this->load->view('menu/cajas/form_pendiente', $data);
     }
@@ -206,21 +209,20 @@ class cajas extends MY_Controller
     {
         header('Content-Type: application/json');
 
-        $caja_pendiente = $this->db->get_where('caja_pendiente', array('id'=>$id))->row();
+        $caja_pendiente = $this->db->get_where('caja_pendiente', array('id' => $id))->row();
 
-        $caja_desglose = $this->db->get_where('caja_desglose', array('id'=>$caja_pendiente->caja_desglose_id))->row();
+        $caja_desglose = $this->db->get_where('caja_desglose', array('id' => $caja_pendiente->caja_desglose_id))->row();
 
         $traspaso_flag = false;
-        if($caja_pendiente->tipo == 'TRASPASO'){
-            $caja_desglose_d = $this->db->get_where('caja_desglose', array('id'=>$caja_pendiente->ref_id))->row();
-            if($caja_pendiente->monto > $caja_desglose_d->saldo)
+        if ($caja_pendiente->tipo == 'TRASPASO') {
+            $caja_desglose_d = $this->db->get_where('caja_desglose', array('id' => $caja_pendiente->ref_id))->row();
+            if ($caja_pendiente->monto > $caja_desglose_d->saldo)
                 $traspaso_flag = true;
         }
 
-        if(($caja_pendiente->IO == 2 && $caja_pendiente->monto > $caja_desglose->saldo) || $traspaso_flag == true){
+        if (($caja_pendiente->IO == 2 && $caja_pendiente->monto > $caja_desglose->saldo) || $traspaso_flag == true) {
             echo json_encode(array('error' => 1));
-        }
-        else{
+        } else {
             $data_mov = array(
                 'caja_desglose_id' => $caja_desglose->id,
                 'usuario_id' => $this->session->userdata('nUsuCodigo'),
@@ -233,11 +235,10 @@ class cajas extends MY_Controller
             );
 
             $new_saldo = 0;
-            if($caja_pendiente->IO == 2){
+            if ($caja_pendiente->IO == 2) {
                 $data_mov['movimiento'] = 'EGRESO';
                 $new_saldo = $caja_desglose->saldo - $caja_pendiente->monto;
-            }
-            else{
+            } else {
                 $data_mov['movimiento'] = 'INGRESO';
                 $new_saldo = $caja_desglose->saldo + $caja_pendiente->monto;
             }
@@ -245,11 +246,11 @@ class cajas extends MY_Controller
             $this->cajas_mov_model->save_mov($data_mov);
 
             $this->db->where('id', $caja_desglose->id);
-            $this->db->update('caja_desglose', array('saldo'=>$new_saldo));
+            $this->db->update('caja_desglose', array('saldo' => $new_saldo));
 
-            if($caja_pendiente->tipo == 'TRASPASO'){
+            if ($caja_pendiente->tipo == 'TRASPASO') {
 
-                $caja_desglose_d = $this->db->get_where('caja_desglose', array('id'=>$caja_pendiente->ref_id))->row();
+                $caja_desglose_d = $this->db->get_where('caja_desglose', array('id' => $caja_pendiente->ref_id))->row();
 
                 $this->cajas_mov_model->save_mov(array(
                     'caja_desglose_id' => $caja_desglose_d->id,
@@ -260,20 +261,18 @@ class cajas extends MY_Controller
                     'saldo' => $caja_pendiente->monto,
                     'saldo_old' => $caja_desglose_d->saldo,
                     'ref_id' => $caja_desglose->id,
-                    'movimiento'=>'EGRESO'
+                    'movimiento' => 'EGRESO'
                 ));
 
                 $this->db->where('id', $caja_desglose_d->id);
-                $this->db->update('caja_desglose', array('saldo'=>$caja_desglose_d->saldo - $caja_pendiente->monto));
+                $this->db->update('caja_desglose', array('saldo' => $caja_desglose_d->saldo - $caja_pendiente->monto));
             }
 
             $this->db->where('id', $caja_pendiente->id);
-            $this->db->update('caja_pendiente', array('estado'=>1));
+            $this->db->update('caja_pendiente', array('estado' => 1));
 
             echo json_encode(array('success' => 1));
         }
-
-
 
 
     }

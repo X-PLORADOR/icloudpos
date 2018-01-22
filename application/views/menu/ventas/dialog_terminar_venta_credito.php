@@ -275,7 +275,7 @@
             </div>
             <div class="modal-body panel-venta-left">
 
-
+<?php $md = get_moneda_defecto()?>
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-3">
@@ -283,7 +283,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="input-prepend input-append input-group">
-                                <label id="lblSim10" class="input-group-addon"><?= MONEDA ?></label><input
+                                <label id="lblSim10" class="input-group-addon"><?= $md->simbolo ?></label><input
                                     type="number"
                                     class='input-square input-small form-control'
                                     min="0.0"
@@ -303,7 +303,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="input-prepend input-append input-group">
-                                <label id="lblSim11" class="input-group-addon"><?= MONEDA ?></label><input
+                                <label id="lblSim11" class="input-group-addon"><?= $md->simbolo ?></label><input
                                     type="number"
                                     class='input-square input-small form-control'
                                     min="0.0"
@@ -322,7 +322,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="input-prepend input-append input-group">
-                                <label id="lblSim12" class="input-group-addon"><?= MONEDA ?></label><input
+                                <label id="lblSim12" class="input-group-addon"><?= $md->simbolo ?></label><input
                                     type="number"
                                     class='input-square input-small form-control'
                                     min="0.0"

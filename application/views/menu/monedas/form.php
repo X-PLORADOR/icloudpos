@@ -24,8 +24,8 @@
                     </div>
 
                 </div>
-                
-                 <div class="row">
+
+                <div class="row">
                     <div class="form-group">
                         <div class="col-md-2">
                             <label>Simbolo</label>
@@ -39,7 +39,7 @@
                     </div>
 
                 </div>
-                
+
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-2">
@@ -53,36 +53,68 @@
 
                     </div>
                 </div>
-                
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-2">
-                            <label>Tasa Soles</label>
-                        </div>
-                        <div class="col-md-10">
-                            <input type="number" name="tasa_soles" id="tasa_soles" required="true"
-                                   class="form-control"
-                                   value="<?php if (isset($monedas['tasa_soles'])) echo $monedas['tasa_soles']; ?>">
-                        </div>
 
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-2">
-                            <label>Operacion</label>
-                        </div>
-                        <div class="col-md-10">
-                        <select id="operacion" name="operacion">
-                              <option value="/" <?php if (isset($monedas['ope_tasa'])) echo "selected"; ?> >Dividir</option>
-                              <option value="*" <?php if (isset($monedas['ope_tasa'])) echo "selected"; ?>>Multiplicar</option>
-                           </select>
-                        </div>
 
+                <?php if ($monedas['id_moneda'] != MONEDA_DEFECTO): ?>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <label>Estado</label>
+                            </div>
+                            <div class="col-md-10">
+                                <select id="status_moneda" name="status_moneda" class="form-control">
+                                    <option value="1" <?= isset($monedas['status_moneda']) && $monedas['status_moneda'] == 1 ? "selected" : '' ?> >
+                                        Activa
+                                    </option>
+                                    <option value="0" <?= isset($monedas['status_moneda']) && $monedas['status_moneda'] == 0 ? "selected" : '' ?>>
+                                        Inactiva
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
+
+                    <h4>Tasa de conversi&oacute;n a <?= $moneda_defecto->nombre ?></h4>
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon nuevo_simbolo"><?php if (isset($monedas['simbolo'])) echo $monedas['simbolo']; ?></div>
+                                    <input type="number" name="un_" id="un_" required="true"
+                                           class="form-control"
+                                           value="1" readonly>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4" style="text-align: center;"><label>Equivale a</label></div>
+
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><?= $moneda_defecto->simbolo ?></div>
+                                    <input type="number" name="tasa_soles" id="tasa_soles" required="true"
+                                           class="form-control"
+                                           value="<?php if (isset($monedas['tasa_soles'])) echo $monedas['tasa_soles']; ?>">
+                                </div>
+                            </div>
+
+                            <div class="col-md-2" style="display: none;">
+                                <select id="operacion" name="operacion" class="form-control">
+                                    <option value="/" <?php if (isset($monedas['ope_tasa'])) echo "selected"; ?> >
+                                        Dividir
+                                    </option>
+                                    <option value="*" <?php if (isset($monedas['ope_tasa'])) echo "selected"; ?>>
+                                        Multiplicar
+                                    </option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                <?php endif; ?>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="marca.guardar()">Confirmar</button>
@@ -92,3 +124,11 @@
             <!-- /.modal-content -->
         </div>
 </form>
+
+<script>
+    $(function () {
+        $('#simbolo').on('keyup', function () {
+            $('.nuevo_simbolo').html($(this).val());
+        })
+    })
+</script>

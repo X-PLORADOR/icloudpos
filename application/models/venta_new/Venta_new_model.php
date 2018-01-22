@@ -159,9 +159,7 @@ class venta_new_model extends CI_Model
 
         $venta_actual = $this->db->get_where('venta', array('venta_id' => $venta['venta_id']))->row();
 
-        $moneda_id = 1;
-        if ($venta_actual->id_moneda == 1030)
-            $moneda_id = 2;
+        $moneda_id = $venta_actual->id_moneda;
 
         $cuenta_id = $this->cajas_model->get_cuenta_id(array(
             'moneda_id' => $moneda_id,
@@ -255,9 +253,7 @@ function save_venta_contado($venta, $productos, $traspasos = array())
     $venta_id = $this->db->insert_id();
 
     if ($venta['venta_status'] != 'CAJA') {
-        $moneda_id = 1;
-        if ($venta_contado['id_moneda'] == 1030)
-            $moneda_id = 2;
+        $moneda_id = $venta_contado['id_moneda'];
 
         $cuenta_id = $this->cajas_model->get_cuenta_id(array(
             'moneda_id' => $moneda_id,
@@ -343,9 +339,8 @@ function save_venta_credito($venta, $productos, $traspasos = array(), $cuotas)
     $venta_id = $this->db->insert_id();
 
     if ($venta['venta_status'] != 'CAJA' && $venta_contado['inicial'] > 0) {
-        $moneda_id = 1;
-        if ($venta_contado['id_moneda'] == 1030)
-            $moneda_id = 2;
+        $moneda_id = $venta_contado['id_moneda'];
+
 
         $cuenta_id = $this->cajas_model->get_cuenta_id(array(
             'moneda_id' => $moneda_id,
@@ -685,9 +680,8 @@ function anular_venta($venta_id, $serie, $numero)
 
         $venta = $this->db->get_where('venta', array('venta_id' => $venta_id))->row();
 
-        $moneda_id = 1;
-        if ($venta->id_moneda == 1030)
-            $moneda_id = 2;
+        $moneda_id = $venta->id_moneda;
+
         $this->cajas_model->save_pendiente(array(
             'monto' => $venta->total,
             'tipo' => 'VENTA_ANULADA',
@@ -726,9 +720,8 @@ function devolver_venta($venta_id, $total_importe, $devoluciones, $serie, $numer
     ));
 
 
-    $moneda_id = 1;
-    if ($venta_old->id_moneda == 1030)
-        $moneda_id = 2;
+    $moneda_id = $venta_old->id_moneda;
+
     $this->cajas_model->save_pendiente(array(
         'monto' => $venta_old->total - $total,
         'tipo' => 'VENTA_DEVUELTA',

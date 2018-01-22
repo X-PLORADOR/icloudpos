@@ -22,20 +22,18 @@ class producto_costo_unitario_model extends CI_Model
 
         $data['costo'] = $data['costo'];
 
-        if(isset($data['contable_costo'])){
+        if (isset($data['contable_costo'])) {
             $contable_costo = $data['contable_costo'];
             $cont_act = $data['contable_activo'];
-        }
-        else{
+        } else {
             $c_contable = $this->db->get_where($this->table, array(
-            'producto_id' => $data['producto_id'],
-            'moneda_id' => $data['moneda_id']))->row();
+                'producto_id' => $data['producto_id'],
+                'moneda_id' => $data['moneda_id']))->row();
 
             $contable_costo = $c_contable != NULL ? $c_contable->contable_costo : 0;
             $cont_act = $data['moneda_id'];
         }
 
-        
 
         if ($cont_act == $data['moneda_id']) {
             $data['contable_costo'] = $contable_costo;
@@ -70,39 +68,19 @@ class producto_costo_unitario_model extends CI_Model
                     $values['contable_costo'] = $contable_costo;
                 }
 
-                if ($moneda_costo->tasa_soles == 0) {
-
-                    if ($m->ope_tasa == "/") {
-                        $values['costo'] = $costo->costo / $m->tasa_soles;
-                    } elseif ($m->ope_tasa == "*") {
-                        $values['costo'] = $costo->costo * $m->tasa_soles;
-                    } else {
-                        $values['costo'] = $costo->costo;
-                    }
-
-
+                if ($m->id_moneda == MONEDA_DEFECTO) {
+                    $values['costo'] = $data['costo'] * $moneda_costo->tasa_soles;
                 } else {
-
-                    $moneda_costo->tasa_soles = $tasa == 0 ? 1 : $tasa;
-
-                    $puente = $m->tasa_soles == 0 ? 1 : $m->tasa_soles;
-
-                    if ($m->ope_tasa == "/" || $puente == 1) {
-                        $val = ($costo->costo / $puente) * $moneda_costo->tasa_soles;
-
-                        $values['costo'] = $val;
-                    } elseif ($m->ope_tasa == "*") {
-                        $val = ($costo->costo * $puente) / $moneda_costo->tasa_soles;
-                        $values['costo'] = $val;
+                    if ($moneda_costo->id_moneda == MONEDA_DEFECTO) {
+                        $values['costo'] = $data['costo'] / $m->tasa_soles;
                     } else {
-                        $values['costo'] = $costo->costo;
+                        $values['costo'] = $data['costo'] * $moneda_costo->tasa_soles / $m->tasa_soles;
                     }
                 }
 
                 $this->db->insert($this->table, $values);
             }
         }
-
 
 
         $costo = $this->db->get_where($this->table, array(
@@ -115,28 +93,17 @@ class producto_costo_unitario_model extends CI_Model
         foreach ($monedas as $m) {
             $values = array();
             if ($m->id_moneda != $costo->moneda_id) {
-                $m->tasa_soles = $m->tasa_soles == 0 ? 1 : $m->tasa_soles;
-                if ($moneda_costo->tasa_soles == 0) {
-                    if ($m->ope_tasa == "/") {
-                        $values['contable_costo'] = $costo->contable_costo / $m->tasa_soles;
-                    } elseif ($m->ope_tasa == "*") {
-                        $values['contable_costo'] = $costo->contable_costo * $m->tasa_soles;
-                    } else {
-                        $values['contable_costo'] = $costo->contable_costo;
-                    }
+
+                if ($m->id_moneda == MONEDA_DEFECTO) {
+                    $values['contable_costo'] = $data['contable_costo'] * $moneda_costo->tasa_soles;
                 } else {
-                    $moneda_costo->tasa_soles = $tasa == 0 ? 1 : $tasa;
-                    $puente = $m->tasa_soles == 0 ? 1 : $m->tasa_soles;
-                    if ($m->ope_tasa == "/" || $puente == 1) {
-                        $val = ($costo->contable_costo / $puente) * $moneda_costo->tasa_soles;
-                        $values['contable_costo'] = $val;
-                    } elseif ($m->ope_tasa == "*") {
-                        $val = ($costo->contable_costo * $puente) / $moneda_costo->tasa_soles;
-                        $values['contable_costo'] = $val;
+                    if ($moneda_costo->id_moneda == MONEDA_DEFECTO) {
+                        $values['contable_costo'] = $data['contable_costo'] / $m->tasa_soles;
                     } else {
-                        $values['contable_costo'] = $costo->contable_costo;
+                        $values['contable_costo'] = $data['contable_costo'] * $moneda_costo->tasa_soles / $m->tasa_soles;
                     }
                 }
+
                 $this->db->where(array(
                     'producto_id' => $data['producto_id'],
                     'moneda_id' => $m->id_moneda));
@@ -155,7 +122,7 @@ class producto_costo_unitario_model extends CI_Model
         if (($producto_id == 0 && count($monedas) != 0) && count($monedas_cu) == 0) {
             foreach ($monedas as $m) {
                 $values = $this->prepare_costo($m);
-                if ($m->nombre == 'Soles' && $m->ope_tasa == 0) {
+                if ($m->id_moneda == MONEDA_DEFECTO) {
                     $values['cu_activo'] = '1';
                     $values['cu_contable_activo'] = '1';
                 }
@@ -186,7 +153,7 @@ class producto_costo_unitario_model extends CI_Model
                 $values = $this->prepare_costo($m);
                 $values['cu_costo'] = $producto->producto_costo_unitario;
                 $values['cu_contable_costo'] = 0;
-                if ($m->nombre == 'Soles' && $m->ope_tasa == 0) {
+                if ($m->id_moneda == MONEDA_DEFECTO) {
                     $values['cu_activo'] = '1';
                     $values['cu_contable_activo'] = '1';
                 }

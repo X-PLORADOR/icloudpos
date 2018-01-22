@@ -61,10 +61,10 @@
 	<th>Nro Venta</th>
 	<th>Cliente</th>
 	<th class='tip' title="Fecha Registro">Fecha Reg.</th>
-
-	<th class='tip' title="Monto Credito Solicitado">Monto Cred <?php echo MONEDA ?></th>
-	<th class='tip' title="Monto Cancelado">Monto Abonado <?php echo MONEDA ?></th>
-	<th class='tip' title="Monto Cancelado">Restante <?php echo MONEDA ?></th>
+    <?php $md = get_moneda_defecto(); ?>
+	<th class='tip' title="Monto Credito Solicitado">Monto Cred <?php echo $md->simbolo ?></th>
+	<th class='tip' title="Monto Cancelado">Monto Abonado <?php echo $md->simbolo ?></th>
+	<th class='tip' title="Monto Cancelado">Restante <?php echo $md->simbolo ?></th>
 
 	<th class='tip' title="Total">Días de atraso a hoy <?= date('d-m-Y')?></th>
     <?php if($local=="TODOS"){?>

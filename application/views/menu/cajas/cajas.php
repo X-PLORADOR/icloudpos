@@ -13,13 +13,13 @@
         </div>
         <div class="col-md-3">
             <select id="local_id" name="local_id" class="form-control">
-                <?php foreach ($locales as $local):?>
-                <option value="<?=$local['int_local_id']?>"
-                     <?=$local_selected==$local['int_local_id'] ? 'selected' : ''?>><?=$local['local_nombre']?></option>
-            <?php endforeach;?>
+                <?php foreach ($locales as $local): ?>
+                    <option value="<?= $local['int_local_id'] ?>"
+                        <?= $local_selected == $local['int_local_id'] ? 'selected' : '' ?>><?= $local['local_nombre'] ?></option>
+                <?php endforeach; ?>
             </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" style="display: none;">
             <a class="btn btn-default" id="btn_new_caja">
                 <i class="fa fa-plus"> Nueva Caja</i>
             </a>
@@ -45,27 +45,27 @@
 
     <ul class="nav nav-tabs">
         <?php foreach ($cajas as $caja): ?>
-            <li <?= $caja->moneda_id == 1 ? 'class="active"' : '' ?>>
+            <li <?= $caja->moneda_id == MONEDA_DEFECTO ? 'class="active"' : '' ?>>
                 <a data-toggle="tab"
-                   href="#caja<?= $caja->id ?>"><?= $caja->moneda_id == 1 ? 'SOLES' : 'DOLARES' ?>
-                    - <?= $caja->estado == '1' ? 'Activa' : 'Inactiva' ?></a></li>
+                   href="#caja<?= $caja->id ?>"><?= $caja->nombre ?>
+                    - <?= $caja->status_moneda == '1' ? 'Activa' : 'Inactiva' ?></a></li>
         <?php endforeach; ?>
     </ul>
 
     <div class="tab-content">
         <?php foreach ($cajas as $caja): ?>
             <div
-                id="caja<?= $caja->id ?>" <?= $caja->moneda_id == 1 ? 'class="tab-pane fade in active"' : 'class="tab-pane"' ?>>
-                <h4>Caja de <?= $caja->moneda_id == 1 ? 'SOLES' : 'DOLARES' ?></h4>
-                <h4 class="col-md-4"><label>Responsable: </label> <?= $caja->nombre ?></h4>
+                    id="caja<?= $caja->id ?>" <?= $caja->moneda_id == MONEDA_DEFECTO ? 'class="tab-pane fade in active"' : 'class="tab-pane"' ?>>
+                <h4>Caja de <?= $caja->nombre ?></h4>
+                <h4 class="col-md-4"><label>Responsable: </label> <?= $caja->usuario_nombre ?></h4>
 
                 <?php $totalSaldo = 0; ?>
                 <?php foreach ($caja->desgloses as $desglose): ?>
                     <?php $totalSaldo += $desglose->saldo; ?>
-                <?php endforeach;?>
+                <?php endforeach; ?>
                 <div class="col-md-4"><h4><label>Saldo Total: </label>
-                        <?= $caja->moneda_id == 1 ? MONEDA : '$' ?> <span id="totalSaldo"><?=number_format($totalSaldo, 2)?></span>
-</h4>                </div>
+                        <?= $caja->simbolo ?> <span id="totalSaldo"><?= number_format($totalSaldo, 2) ?></span>
+                    </h4></div>
                 <div class="col-md-2">
                     <a data-caja_id="<?= $caja->id ?>" class="btn_new_caja_cuenta btn btn-default">
                         <i class="fa fa-plus"> Nueva Cuenta</i>
@@ -99,7 +99,7 @@
                             <tr>
                                 <td><?= $desglose->descripcion ?></td>
                                 <td><?= $desglose->nombre ?></td>
-                                <td><?=$caja->moneda_id == 1 ? MONEDA : '$'?> <?= number_format($desglose->saldo,2) ?></td>
+                                <td><?= $caja->simbolo ?> <?= number_format($desglose->saldo, 2) ?></td>
                                 <td><?= $desglose->principal == '1' ? 'SI' : 'NO' ?></td>
                                 <td><?= $desglose->estado == '1' ? 'Activa' : 'Inactiva' ?></td>
                                 <td align="center">
@@ -109,32 +109,32 @@
                                         <i class="fa fa-edit"></i>
                                     </a>
 
-                                <?php if($desglose->retencion == 1):?>
-                                    <a class="btn_ajustar_caja_cuenta_retencion btn btn-primary"
-                                       data-caja_id="<?= $caja->id ?>"
-                                       data-id="<?= $desglose->id ?>">
-                                        <i class="fa fa-money"></i>
-                                    </a>
-                                <?php else:?>
-                                    <a class="btn_ajustar_caja_cuenta btn btn-warning"
-                                       data-caja_id="<?= $caja->id ?>"
-                                       data-id="<?= $desglose->id ?>">
-                                        <i class="fa fa-exchange"></i>
-                                    </a>
-                                <?php endif;?>
+                                    <?php if ($desglose->retencion == 1): ?>
+                                        <a class="btn_ajustar_caja_cuenta_retencion btn btn-primary"
+                                           data-caja_id="<?= $caja->id ?>"
+                                           data-id="<?= $desglose->id ?>">
+                                            <i class="fa fa-money"></i>
+                                        </a>
+                                    <?php else: ?>
+                                        <a class="btn_ajustar_caja_cuenta btn btn-warning"
+                                           data-caja_id="<?= $caja->id ?>"
+                                           data-id="<?= $desglose->id ?>">
+                                            <i class="fa fa-exchange"></i>
+                                        </a>
+                                    <?php endif; ?>
 
                                     <a class="btn_detalle_caja_cuenta btn btn-default"
                                        data-id="<?= $desglose->id ?>">
                                         <i class="fa fa-search"></i>
                                     </a>
 
-                                    <?php if(count($desglose->pendientes) > 0):?>
-                                    <a class="btn_pendiente_caja_cuenta btn btn-danger"
-                                       data-caja_id="<?= $caja->id ?>"
-                                       data-id="<?= $desglose->id ?>">
-                                        <i class="fa fa-check"></i> <?=count($desglose->pendientes)?>
-                                    </a>
-                                <?php endif;?>
+                                    <?php if (count($desglose->pendientes) > 0): ?>
+                                        <a class="btn_pendiente_caja_cuenta btn btn-danger"
+                                           data-caja_id="<?= $caja->id ?>"
+                                           data-id="<?= $desglose->id ?>">
+                                            <i class="fa fa-check"></i> <?= count($desglose->pendientes) ?>
+                                        </a>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -160,15 +160,13 @@
 </div>
 
 
-
-
 <script>
 
     $(document).ready(function () {
 
         $('.input-datepicker').datepicker({weekStart: 1, format: 'dd-mm-yyyy'});
 
-        $("#local_id").on('change', function(){
+        $("#local_id").on('change', function () {
             $.ajax({
                 url: '<?php echo base_url('cajas/index')?>' + '/' + $("#local_id").val(),
                 success: function (data) {

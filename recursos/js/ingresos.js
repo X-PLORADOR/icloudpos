@@ -93,7 +93,7 @@ $(document).ready(function () {
         if ($(this).attr('data-action') == "1") {
             var tasa = parseFloat($("#tasa_id").val());
 
-            if ((!isNaN(tasa) && tasa > 0) || tasa_val == '0.00') {
+            if ((!isNaN(tasa) && tasa > 0) || $("#monedas option:selected").val() == $('#MONEDA_DEFECTO_ID').val()) {
 
 
 
@@ -153,7 +153,8 @@ $(document).ready(function () {
         var tasa_simbolo = $("#monedas option:selected").attr('data-simbolo');
 
         $(".tipo_tasa").html(tasa_simbolo);
-        if (tasa_val == "0.00")
+
+        if ($("#monedas option:selected").val() == $('#MONEDA_DEFECTO_ID').val())
 
             if ($("#facturar").val() == "SI") {
                 $("#tasa_id").prop('disabled', false);

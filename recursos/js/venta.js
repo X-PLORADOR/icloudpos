@@ -278,7 +278,7 @@ $(document).ready(function () {
         $("#tasa").val(tasa);
         $('.tipo_moneda').html(simbolo);
 
-        if (tasa != 0.00) {
+        if ($('#moneda_id option:selected').val() != $('#MONEDA_DEFECTO_ID').val()) {
             $('#block_tasa').show();
             $("#tasa").trigger('focus');
         }
@@ -1134,17 +1134,12 @@ function refresh_right_panel() {
         total += lst_producto[i].subtotal;
     }
 
-    if (tipo_moneda != 0.00) {
-        if (operacion == '*') {
-            $('.precio-input').each(function () {
-                $(this).val(parseFloat($(this).attr('data-value') * tasa).toFixed(3));
-            });
-        }
-        else if (operacion == '/') {
-            $('.precio-input').each(function () {
-                $(this).val(parseFloat($(this).attr('data-value') / tasa).toFixed(3));
-            });
-        }
+    if ($('#moneda_id option:selected').val() != $('#MONEDA_DEFECTO_ID').val()) {
+
+        $('.precio-input').each(function () {
+            $(this).val(parseFloat($(this).attr('data-value') / tasa).toFixed(3));
+        });
+
     } else {
         $('.precio-input').each(function () {
             $(this).val(parseFloat($(this).attr('data-value')));

@@ -1,5 +1,5 @@
 <?php $ruta = base_url(); ?>
-
+<?php $md = get_moneda_defecto()?>
 <div class="modal-dialog" style="width: 70%;" >
     <div class="modal-content">
         <div class="modal-header">
@@ -31,7 +31,7 @@
                     <?php
                     if (isset($detalles)) {
                         $total = 0;
-                        $simbolo = MONEDA;
+                        $simbolo = $md->simbolo;
                         foreach ($detalles as $detalle) {
                             $total += $detalle->precio*$detalle->cantidad;
                             $simbolo = $detalle->simbolo;

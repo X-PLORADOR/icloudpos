@@ -39,6 +39,7 @@
         border: 1px solid #DEDEDE;
     }
 </style>
+<?php $md = get_moneda_defecto()?>
 <ul class="breadcrumb breadcrumb-top">
     <li>Ingresos</li>
     <li>
@@ -100,7 +101,7 @@
                 <div class="col-md-2" id="tasa_block" style="display: none;">
                     <label class="control-label">Tasa:</label>
                     <div class="input-group">
-                        <div style="min-width: 10px;" class="input-group-addon"><?= MONEDA ?></div>
+                        <div style="min-width: 10px;" class="input-group-addon"><?= $md->simbolo ?></div>
                         <input type="text" id="tasa" name="tasa" value="" class='form-control'>
 
                     </div>
@@ -219,14 +220,14 @@
                                                                        style="cursor: pointer">Incluir IGV</label>
                 </div>
                 <div class="col-md-2">
-                    <label>Subtotal: <span class="tipo_moneda"><?= MONEDA ?></span> <span
+                    <label>Subtotal: <span class="tipo_moneda"><?= $md->simbolo ?></span> <span
                                 id="subtotal">0.00</span></label>
                 </div>
                 <div class="col-md-2">
-                    <label>IGV: <span class="tipo_moneda"><?= MONEDA ?></span> <span id="impuesto">0.00</span></label>
+                    <label>IGV: <span class="tipo_moneda"><?= $md->simbolo ?></span> <span id="impuesto">0.00</span></label>
                 </div>
                 <div class="col-md-2">
-                    <label>Total: <span class="tipo_moneda"><?= MONEDA ?></span> <span id="total">0.00</span></label>
+                    <label>Total: <span class="tipo_moneda"><?= $md->simbolo ?></span> <span id="total">0.00</span></label>
                 </div>
             </div>
             <div class="block" id="tables_template">

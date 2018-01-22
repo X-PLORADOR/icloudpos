@@ -129,8 +129,9 @@
                     <div class="col-md-2 text-right tasa_moneda"><label class="control-label panel-admin-text">Moneda
                             Tasa:</label></div>
                     <div class="col-md-3 tasa_moneda">
+                        <?php $md = get_moneda_defecto()?>
                         <div class="input-group">
-                            <div class="input-group-addon"><?php echo MONEDA ?></div>
+                            <div class="input-group-addon"><?php echo $md->simbolo ?></div>
                             <input type="text" style="text-align: right;"
                                    class='form-control'
                                    name="tasa" id="tasa" value="0.00"

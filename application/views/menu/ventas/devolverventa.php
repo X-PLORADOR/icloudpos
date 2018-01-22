@@ -14,7 +14,7 @@
      var observacion = $('#observacion').val();
      var usuario_id = $('#usuario_id').val();
      $.ajax({
-     url: '<?php echo base_url();?>' + 'venta/anular_venta',
+     url: '' + 'venta/anular_venta',
      type: 'POST',
      data: 'venta_id=' + id + '&observacion=' + observacion + "&usuario_id=" + usuario_id,
      success: function (msj) {
@@ -48,6 +48,7 @@
 
                     <div class="tab-content">
                         <div class="table-responsive">
+                            <?php $md = get_moneda_defecto()?>
                             <table class='table table-striped dataTable table-bordered' id="table">
                                 <thead>
                                 <tr>
@@ -57,7 +58,7 @@
                                     <th>Nro. Doc</th>
                                     <th>Cliente</th>
                                     <th>Fecha Reg</th>
-                                    <th>Monto Total <?php echo MONEDA ?></th>
+                                    <th>Monto Total <?php echo $md->simbolo ?></th>
                                     <th>Estado</th>
                                     <th>Accion</th>
                                 </tr>

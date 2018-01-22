@@ -126,8 +126,10 @@ class proveedor extends MY_Controller
 
     public function cuentas_por_pagar(){
         $this->load->model('local/local_model');
+        $this->load->model('monedas/monedas_model');
 
         $data["lstproveedor"] = $this->proveedor_model->get_all();
+        $data['monedas'] = $this->monedas_model->get_monedas_activas();
         $data["locales"] = $this->local_model->get_local_by_user($this->session->userdata('nUsuCodigo'));
         $dataCuerpo['cuerpo'] = $this->load->view('menu/proveedor/cuentasporpagar', $data, true);
         if ($this->input->is_ajax_request()) {

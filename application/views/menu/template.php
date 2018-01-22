@@ -733,6 +733,10 @@ $primary_nav = array(
 </head>
 
 <body>
+<?php $md = get_moneda_defecto()?>
+<input type="hidden" id="MONEDA_DEFECTO_ID" value="<?= MONEDA_DEFECTO ?>">
+<input type="hidden" id="MONEDA_DEFECTO_NOMBRE" value="<?= $md->nombre ?>">
+<input type="hidden" id="MONEDA_DEFECTO_SIMBOLO" value="<?= $md->simbolo ?>">
 
 <div id="page-wrapper"<?php if ($template['page_preloader']) {
     echo ' class="page-loading"';

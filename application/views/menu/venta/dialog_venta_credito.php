@@ -5,6 +5,7 @@
 <input type="hidden" id="periodo_pago" value="4">
 <input type="hidden" id="proyeccion_rango" value="1">
 <input type="hidden" id="c_venta_estado" value="COMPLETADO">
+<?php $md = get_moneda_defecto()?>
 <?php if (validOption("VISTA_CREDITO", 'AVANZADO', 'SIMPLE')): ?>
 <div class="modal-dialog" style="width: 75%;">
     <div class="modal-content">
@@ -155,7 +156,7 @@
 
                             <div class="col-md-7">
                                 <div class="input-group">
-                                    <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                                    <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                                     <input type="text" style="text-align: right; font-weight: bold;"
                                            class='form-control'
                                            name="c_precio_contado" id="c_precio_contado" readonly>
@@ -170,7 +171,7 @@
 
                             <div class="col-md-7">
                                 <div class="input-group">
-                                    <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                                    <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                                     <input type="text" style="text-align: right; font-weight: bold;"
                                            class='form-control'
                                            name="c_precio_credito" id="c_precio_credito" readonly>
@@ -185,7 +186,7 @@
 
                             <div class="col-md-7">
                                 <div class="input-group">
-                                    <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                                    <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                                     <input type="text" style="text-align: right; padding-right: 2px;"
                                            class='form-control'
                                            name="c_saldo_inicial" id="c_saldo_inicial"
@@ -278,11 +279,11 @@
                     <div class="col-md-6">
                         <div class="row" style="text-align: left;">
                             <div class="col-md-6">
-                                <h4>Total Deuda: <span class="tipo_moneda"><?= MONEDA ?></span> <span
+                                <h4>Total Deuda: <span class="tipo_moneda"><?= $md->simbolo ?></span> <span
                                         id="c_total_deuda">0</span></h4>
                             </div>
                             <div class="col-md-6">
-                                <h4>Total Saldo: <span class="tipo_moneda"><?= MONEDA ?></span> <span
+                                <h4>Total Saldo: <span class="tipo_moneda"><?= $md->simbolo ?></span> <span
                                         id="c_total_saldo">0</span></h4>
                             </div>
                         </div>
@@ -326,7 +327,7 @@
                             </div>
                             <div class="col-md-9">
                                 <div class="input-prepend input-append input-group">
-                                    <label class="input-group-addon tipo_moneda"><?= MONEDA ?></label><input
+                                    <label class="input-group-addon tipo_moneda"><?= $md->simbolo ?></label><input
                                         type="number"
                                         class='input-square input-small form-control'
                                         min="0.0"
@@ -346,7 +347,7 @@
                             </div>
                             <div class="col-md-9">
                                 <div class="input-prepend input-append input-group">
-                                    <label class="input-group-addon tipo_moneda"><?= MONEDA ?></label><input
+                                    <label class="input-group-addon tipo_moneda"><?= $md->simbolo ?></label><input
                                         type="number"
                                         class='input-square input-small form-control'
                                         min="0.0"
@@ -365,7 +366,7 @@
                             </div>
                             <div class="col-md-9">
                                 <div class="input-prepend input-append input-group">
-                                    <label class="input-group-addon tipo_moneda"><?= MONEDA ?></label><input
+                                    <label class="input-group-addon tipo_moneda"><?= $md->simbolo ?></label><input
                                         type="number"
                                         class='input-square input-small form-control'
                                         min="0.0"

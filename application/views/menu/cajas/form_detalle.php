@@ -28,7 +28,7 @@
                         <td><?= $mov->movimiento ?></td>
                         <td><?= $mov->operacion ?></td>
                         <td><?= $mov->medio_pago ?></td>
-                        <td><?= $mov->moneda_id == 1 ? MONEDA : DOLAR ?> <?= number_format($mov->saldo, 2) ?></td>
+                        <td><?= $mov->simbolo ?> <?= number_format($mov->saldo, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

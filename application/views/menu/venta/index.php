@@ -5,7 +5,7 @@
     <label id="save_venta_load" style="font-size: 12px; float: right; display: none;"
            class="control-label badge label-primary">Guardando la Venta...</label>
 </ul>
-
+<?php $md = get_moneda_defecto()?>
 <form id="form_venta" method="POST" action="<?= base_url('venta_new/save') ?>">
     <div class="block">
 
@@ -13,7 +13,7 @@
         <input type="hidden" id="generar_facturacion" value="<?= valueOption('ACTIVAR_FACTURACION_VENTA') ?>">
         <input type="hidden" id="generar_shadow_stock" value="<?= valueOption('ACTIVAR_SHADOW') ?>">
         <input type="hidden" id="incorporar_igv" value="<?= valueOption('INCORPORAR_IGV') ?>">
-        <input type="hidden" id="moneda_simbolo" value="<?= MONEDA ?>">
+        <input type="hidden" id="moneda_simbolo" value="<?= $md->simbolo ?>">
 
         <div class="row">
 
@@ -202,7 +202,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="input-group">
-                                    <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                                    <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                                     <input type="text" style="text-align: right;"
                                            class='form-control'
                                            data-index="0"
@@ -220,7 +220,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="input-group">
-                                    <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                                    <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                                     <input type="text" style="text-align: right;"
                                            class='form-control'
                                            name="importe" id="importe" value="0.00"
@@ -294,7 +294,7 @@
 
                     <div class="col-md-7">
                         <div class="input-group">
-                            <div class="input-group-addon"><?= MONEDA ?></div>
+                            <div class="input-group-addon"><?= $md->simbolo ?></div>
                             <input type="text" style="text-align: right;"
                                    class='form-control'
                                    name="tasa" id="tasa" value="0.00"
@@ -313,7 +313,7 @@
 
                     <div class="col-md-7">
                         <div class="input-group">
-                            <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                            <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                             <input type="text" style="text-align: right;"
                                    class='form-control'
                                    name="subtotal" id="subtotal" value="0.00"
@@ -330,7 +330,7 @@
 
                     <div class="col-md-7">
                         <div class="input-group">
-                            <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                            <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                             <input type="text" style="text-align: right;"
                                    class='form-control'
                                    name="impuesto" id="impuesto" value="0.00"
@@ -347,7 +347,7 @@
 
                     <div class="col-md-7">
                         <div class="input-group">
-                            <div class="input-group-addon tipo_moneda"><?= MONEDA ?></div>
+                            <div class="input-group-addon tipo_moneda"><?= $md->simbolo ?></div>
                             <input type="text" style="text-align: right; background: #FFC000"
                                    class='form-control'
                                    name="total_importe" id="total_importe" value="0.00"

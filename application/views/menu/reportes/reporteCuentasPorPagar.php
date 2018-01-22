@@ -39,9 +39,10 @@ header("Expires: 0");
         <th>Proveedor</th>
         <th class='tip' title="Fecha Registro">Fecha Reg.</th>
         <th class='tip' title="Tipo Doc">Tipo de Doc.</th>
-        <th class='tip' title="Total">Monto Ingreso <?php echo MONEDA ?></th>
-        <th class='tip' title="Total">Monto abonado <?php echo MONEDA ?></th>
-        <th class='tip' title="Total">Monto Deudor <?php echo MONEDA ?></th>
+        <?php $md = get_moneda_defecto(); ?>
+        <th class='tip' title="Total">Monto Ingreso <?php echo $md->simbolo ?></th>
+        <th class='tip' title="Total">Monto abonado <?php echo $md->simbolo ?></th>
+        <th class='tip' title="Total">Monto Deudor <?php echo $md->simbolo ?></th>
         <th class='tip' title="Total">Días de atraso a hoy <?= date('d-m-Y') ?></th>
         <th class='tip' title="Estatus">Estatus</th>
 

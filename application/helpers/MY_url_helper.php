@@ -1,4 +1,8 @@
 <?php
+function get_moneda_defecto(){
+    $CI =& get_instance();
+    return $CI->db->get_where('moneda', array('id_moneda' => MONEDA_DEFECTO))->row();
+}
 
 function get_tipo_doc($cod){
     switch ($cod) {

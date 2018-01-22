@@ -1,8 +1,12 @@
+<?php $md = get_moneda_defecto() ?>
+<input type="hidden" id="caja_tasa" value="<?= $md->id_moneda == $caja_actual->id_moneda ? -1 : 1 / $caja_actual->tasa_soles?>">
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"><?= isset($header_text) ? $header_text : '' ?></h4>
+            <?= $md->id_moneda ?>
+            <?= $caja_actual->id_moneda ?>
         </div>
         <div class="modal-body">
             <input type="hidden" name="cuenta_id" id="cuenta_id" required="true"
@@ -10,6 +14,7 @@
             <form name="caja_form" action="<?= base_url() ?>cajas/caja_cuenta_guardar" method="post" id="caja_form">
 
                 <input type="hidden" name="caja_id" id="caja_id" required="true"
+                       data-simbolo="<?= $caja_actual->simbolo ?>"
                        value="<?= $caja_actual->id ?>" data-moneda_id="<?= $caja_actual->moneda_id ?>">
 
                 <div class="row">
@@ -32,8 +37,9 @@
                         </div>
                         <div class="col-md-8">
                             <div class="input-group">
+
                                 <div
-                                        class="input-group-addon"><?= $caja_actual->moneda_id == 1 ? MONEDA : DOLAR ?></div>
+                                        class="input-group-addon"><?= $caja_actual->simbolo ?></div>
                                 <input type="text" id="saldo_actual" name="saldo_actual"
                                        class="form-control" readonly
                                        value="<?= isset($cuenta->saldo) ? $cuenta->saldo : '0' ?>">
@@ -106,13 +112,16 @@
                         <div class="col-md-4">
                             <label>Caja a Transferir</label>
                         </div>
+
                         <div class="col-md-8">
                             <select id="caja_select" name="caja_select" class="form-control">
                                 <?php foreach ($cajas as $caja): ?>
                                     <option <?= $caja->id == $caja_actual->id ? 'selected' : '' ?>
                                             value="<?= $caja->id ?>"
                                             data-moneda_id="<?= $caja->moneda_id ?>"
-                                    ><?= $caja->moneda_id == 1 ? 'CAJA SOLES' : 'CAJA DOLARES' ?></option>
+                                            data-simbolo="<?= $caja->simbolo ?>"
+                                            data-tasa="<?= $caja_actual->id == $md->id_moneda ? $caja->tasa_soles : 1 / $caja_actual->tasa_soles ?>"
+                                    ><?= 'Caja ' . $caja->nombre ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -126,7 +135,8 @@
                         </div>
                         <div class="col-md-4">
                             <div class="input-group">
-                                <div class="input-group-addon"><?= MONEDA ?></div>
+
+                                <div class="input-group-addon"><?= $caja_actual->simbolo ?></div>
                                 <input type="number" id="tasa" name="tasa"
                                        class="form-control"
                                        value="">
@@ -170,7 +180,7 @@
                         <div class="col-md-8">
                             <div class="input-group">
                                 <div
-                                        class="input-group-addon"><?= $caja_actual->moneda_id == 1 ? MONEDA : DOLAR ?></div>
+                                        class="input-group-addon"><?= $caja_actual->simbolo ?></div>
                                 <input id="importe" name="importe"
                                        class="form-control"
                                        value="">
@@ -224,6 +234,9 @@
     cajas.push({
         'id': '<?=$caja->id?>',
         'moneda_id': '<?=$caja->moneda_id?>',
+        'nombre': '<?=$caja->nombre?>',
+        'simbolo': '<?=$caja->simbolo?>',
+        'tasa': '<?=$caja->tasa_soles ?>',
         'local_id': '<?=$caja->local_id?>'
     });
     <?php endforeach; ?>
@@ -247,10 +260,7 @@
             var tasa = isNaN(parseFloat($("#tasa").val())) ? 1 : parseFloat($("#tasa").val());
             var importe = isNaN(parseFloat($("#importe").val())) ? 0 : parseFloat($("#importe").val());
 
-            if (moneda == '1')
-                $("#subimporte").val(formatPrice(parseFloat(importe / tasa)));
-            else
-                $("#subimporte").val(formatPrice(parseFloat(importe * tasa)));
+            $("#subimporte").val(formatPrice(parseFloat(importe / tasa)));
 
         });
 
@@ -293,13 +303,11 @@
                 }
             }
 
-            if($("#caja_select").val() == "")
+            if ($("#caja_select").val() == "")
                 $("#moneda_tasa").hide();
             else if ($("#caja_id").val() != $("#caja_select").val()) {
-                if ($('#caja_id').attr('data-moneda_id') == 1)
-                    $(".tipo_moneda").html('$');
-                else
-                    $(".tipo_moneda").html('S/.');
+                $(".tipo_moneda").html($('#caja_select option:selected').attr('data-simbolo'));
+                $("#tasa").val($('#caja_select option:selected').attr('data-tasa'));
                 $("#moneda_tasa").show();
             }
             else {
@@ -409,11 +417,11 @@
         for (var i = 0; i < cajas.length; i++) {
 
             if (cajas[i].local_id == $("#local_select").val()) {
-                var caja_nombre = 'CAJA SOLES';
-                if (cajas[i].moneda_id == 2)
-                    caja_nombre = 'CAJA DOLARES';
+                var caja_nombre = 'Caja ' + cajas[i].nombre;
 
-                caja_id.append('<option value="' + cajas[i].id + '" data-moneda_id="' + cajas[i].moneda_id + '">' + caja_nombre + '</option>');
+                caja_id.append('<option value="' + cajas[i].id + '" data-moneda_id="' + cajas[i].moneda_id + '" ' +
+                    'data-simbolo="' + cajas[i].simbolo + '"  data-tasa="' + ($('#caja_tasa').val() != '-1' ? parseFloat($('#caja_tasa').val()).toFixed(3) : cajas[i].tasa) + '">' +
+                    caja_nombre + '</option>');
             }
         }
 
@@ -428,13 +436,10 @@
             }
         }
 
-        if($("#caja_select").val() == "")
+        if ($("#caja_select").val() == "")
             $("#moneda_tasa").hide();
         else if ($("#caja_id").val() != $("#caja_select").val()) {
-            if ($('#caja_id').attr('data-moneda_id') == 1)
-                $(".tipo_moneda").html('$');
-            else
-                $(".tipo_moneda").html('S/.');
+            $(".tipo_moneda").html($('#caja_id').attr('data-simbolo'));
             $("#moneda_tasa").show();
         }
         else {

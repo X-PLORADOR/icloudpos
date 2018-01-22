@@ -10,7 +10,7 @@
         <form name="caja_form" action="<?= base_url() ?>cajas/caja_guardar" method="post" id="caja_form">
 
 
-            <div class="row">
+            <div class="row" style="display: none;">
                 <div class="form-group">
                     <div class="col-md-3">
                         <label>Ubicaci&oacute;n</label>
@@ -49,26 +49,20 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="display: none;">
                 <div class="form-group">
                     <div class="col-md-3">
                         <label>Moneda</label>
                     </div>
                     <div class="col-md-9">
                         <select name="moneda_id" id="moneda_id" class="form-control">
-                            <option value="">Seleccione</option>
-                            <option value="1" <?= isset($caja->moneda_id) && $caja->moneda_id == 1 ? 'selected' : '' ?>>
-                                SOLES
-                            </option>
-                            <option value="2" <?= isset($caja->moneda_id) && $caja->moneda_id == 2 ? 'selected' : '' ?>>
-                                DOLARES
-                            </option>
+                            <option value="<?= $caja->moneda_id ?>">sd</option>
                         </select>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="display: none;">
                 <div class="form-group">
                     <div class="col-md-3">
                         <label>Estado de la Caja</label>

@@ -1,3 +1,4 @@
+<?php $md = get_moneda_defecto() ?>
 <div class="row-fluid">
 	<div class="span12">
 		<div class="box">
@@ -57,7 +58,7 @@
 									&nbsp;&nbsp;&nbsp;<span class="add-on" >Nro Cuota</span><input type="number" min="1" max="10" step="1" class='input-square input-mini' name="nrocuota" id="nrocuota" onkeyup="calcular_monto_cuota();">
 								</div>
 								<div class="input-prepend input-append" id="monto_cuota">
-									&nbsp;&nbsp;&nbsp;<span class="add-on" >Monto x Cuota</span><input type="text" class='input-square input-small' name="montxcuota" id="montxcuota" readonly><span class="add-on"><?php echo MONEDA ?></span>
+									&nbsp;&nbsp;&nbsp;<span class="add-on" >Monto x Cuota</span><input type="text" class='input-square input-small' name="montxcuota" id="montxcuota" readonly><span class="add-on"><?php echo $md->simbolo ?></span>
 								</div>
 							</div>
 						</div>
@@ -66,7 +67,7 @@
 							<label for="subTotal" class="control-label">SubTotal:</label>
 							<div class="controls">
 								<div class="input-prepend input-append">
-									<span class="add-on" ><?php echo MONEDA ?></span><input type="text" class='input-square input-small' name="subTotal" id="subTotal" readonly>
+									<span class="add-on" ><?php echo $md->simbolo ?></span><input type="text" class='input-square input-small' name="subTotal" id="subTotal" readonly>
 								</div>
 							</div>
 						</div>
@@ -75,7 +76,7 @@
 							<div class="controls">
 								<div class="input-prepend input-append">
 									<input type="number" class='input-square input-mini' min="0.0" max="100.0" step="0.1" value="18.0" name="igv" id="igv" onkeyup="calcular_monto_base_porcentaje();">
-									<input type="text" class='input-square input-small' name="montoigv" id="montoigv" readonly><span class="add-on" ><?php echo MONEDA ?></span>
+									<input type="text" class='input-square input-small' name="montoigv" id="montoigv" readonly><span class="add-on" ><?php echo $md->simbolo ?></span>
 								</div>
 							</div>
 						</div>
@@ -83,7 +84,7 @@
 							<label class="control-label">Total a Pagar:</label>
 							<div class="controls">
 								<div class="input-prepend input-append">
-									<span class="add-on" ><?php echo MONEDA ?></span><input type="text" class='input-square input-small' name="totApagar" id="totApagar" readonly>
+									<span class="add-on" ><?php echo $md->simbolo ?></span><input type="text" class='input-square input-small' name="totApagar" id="totApagar" readonly>
 								</div>
 							</div>
 						</div>
@@ -91,7 +92,7 @@
 							<label for="importe" class="control-label">Importe:</label>
 							<div class="controls">
 								<div class="input-prepend input-append">
-									<span class="add-on" ><?php echo MONEDA ?></span><input type="number" class='input-square input-small' min="0.0" step="0.1" value="0.0" name="importe" id="importe" onkeydown="return soloDecimal(this, event);" onkeyup="calcular_importe();" >
+									<span class="add-on" ><?php echo $md->simbolo ?></span><input type="number" class='input-square input-small' min="0.0" step="0.1" value="0.0" name="importe" id="importe" onkeydown="return soloDecimal(this, event);" onkeyup="calcular_importe();" >
 								</div>
 							</div>
 						</div>
@@ -99,7 +100,7 @@
 							<label for="vuelto" class="control-label">Vuelto:</label>
 							<div class="controls">
 								<div class="input-prepend input-append">
-									<span class="add-on" ><?php echo MONEDA ?></span><input type="text" class='input-square input-small' name="vuelto" id="vuelto" readonly>
+									<span class="add-on" ><?php echo $md->simbolo ?></span><input type="text" class='input-square input-small' name="vuelto" id="vuelto" readonly>
 								</div>
 							</div>
 						</div>

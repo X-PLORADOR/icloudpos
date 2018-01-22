@@ -42,7 +42,8 @@
                     </div>
                     <div class="col-md-9">
                         <div class="input-prepend input-append input-group">
-                            <label class="input-group-addon tipo_moneda"><?= MONEDA ?></label><input
+                            <?php $md = get_moneda_defecto()?>
+                            <label class="input-group-addon tipo_moneda"><?= $md->simbolo ?></label><input
                                 type="number"
                                 class='input-square input-small form-control'
                                 min="0.0"

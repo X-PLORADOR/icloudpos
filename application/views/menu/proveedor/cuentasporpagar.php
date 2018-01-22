@@ -50,8 +50,10 @@
                     <div class="col-md-2">
 
                         <select name="moneda" id="moneda" class='cho form-control'>
-                            <option value="1029" data-simbolo="S/.">SOLES</option>
-                            <option value="1030" data-simbolo="$">DOLARES</option>
+                            <?php foreach ($monedas as $moneda): ?>
+                                <option value="<?= $moneda->id_moneda ?>"
+                                        data-simbolo="<?= $moneda->simbolo ?>"><?= $moneda->nombre ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
 
@@ -78,8 +80,7 @@
 </div>
 <div class="row-fluid">
     <div class="span12">
-        <div class="block" id="lstTabla" >
-            
+        <div class="block" id="lstTabla">
 
 
             <div class="table-responsive">
@@ -116,94 +117,94 @@
                title="Exportar a PDF"><i class="fa fa-file-pdf-o"></i> </a>
         </div>-->
 
-        <div class="col-sm-1"></div>
+            <div class="col-sm-1"></div>
+
+
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="visualizarPago" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
 
 
     </div>
-</div>
+    <script src="<?php echo $ruta ?>recursos/js/pages/tablesDatatables.js"></script>
+    <script>
 
 
-<div class="modal fade" id="visualizarPago" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel"
-     aria-hidden="true">
+        var verificar = 1;
+        $(document).ready(function () {
+            $("#pp_excel").hide();
+            $("#pp_pdf").hide();
 
-
-</div>
-<script src="<?php echo $ruta ?>recursos/js/pages/tablesDatatables.js"></script>
-<script>
-
-
-    var verificar = 1;
-    $(document).ready(function () {
-        $("#pp_excel").hide();
-        $("#pp_pdf").hide();
-
-        buscar();
-
-        $('select').chosen();
-        //$(".input-datepicker").datepicker({format: 'dd-mm-yyyy'});
-        //$(".input-datepicker").datepicker('setDate', new Date());
-
-        $("#proveedor, #documento").on('change', function(){
-            $("#lstTabla").html('');
-        });
-
-        $("#btnBuscar").click(function (e) {
-            e.preventDefault()
             buscar();
-        });
-    });
 
-    
-    function ver_detalle_pago(id_historial, ingreso_id) {
+            $('select').chosen();
+            //$(".input-datepicker").datepicker({format: 'dd-mm-yyyy'});
+            //$(".input-datepicker").datepicker('setDate', new Date());
 
-        $.ajax({
-            type: 'POST',
-            data: {'id_historial': id_historial, 'ingreso_id': ingreso_id},
-            url: '<?php echo base_url();?>' + 'ingresos/imprimir_pago_pendiente',
-            success: function (data) {
-                $("#visualizarPago").html(data);
-                $('#visualizarPago').modal('show');
+            $("#proveedor, #documento").on('change', function () {
+                $("#lstTabla").html('');
+            });
 
-            }
+            $("#btnBuscar").click(function (e) {
+                e.preventDefault()
+                buscar();
+            });
         });
 
 
-    }
+        function ver_detalle_pago(id_historial, ingreso_id) {
 
-    function buscar() {
+            $.ajax({
+                type: 'POST',
+                data: {'id_historial': id_historial, 'ingreso_id': ingreso_id},
+                url: '<?php echo base_url();?>' + 'ingresos/imprimir_pago_pendiente',
+                success: function (data) {
+                    $("#visualizarPago").html(data);
+                    $('#visualizarPago').modal('show');
 
-        $("#cargando_modal").modal('show');
-
-        $.ajax({
-            type: 'POST',
-            data: $('#frmBuscar').serialize(),
-            url: '<?php echo base_url();?>' + 'ingresos/lst_cuentas_porpagar',
-            success: function (data) {
-                $("#lstTabla").html(data);
-                var simbolo = $("#moneda option:selected").attr('data-simbolo');
-                $(".tipo_moneda").html(simbolo);
-                $("#cargando_modal").modal('hide');
-
-            }
-        });
-    }
+                }
+            });
 
 
-    function generar_reporte_excel() {
-        document.getElementById("frmExcel").submit();
-    }
+        }
 
-    function generar_reporte_pdf() {
-        document.getElementById("frmPDF").submit();
-    }
-    
+        function buscar() {
 
-    function guardarPago1(total_ingreso, suma, id_ingreso, id_moneda, tasa_cambio) {
+            $("#cargando_modal").modal('show');
 
-        lst_producto = new Array(); // Esto hay que limpiarlo por si algo falla.
+            $.ajax({
+                type: 'POST',
+                data: $('#frmBuscar').serialize(),
+                url: '<?php echo base_url();?>' + 'ingresos/lst_cuentas_porpagar',
+                success: function (data) {
+                    $("#lstTabla").html(data);
+                    var simbolo = $("#moneda option:selected").attr('data-simbolo');
+                    $(".tipo_moneda").html(simbolo);
+                    $("#cargando_modal").modal('hide');
 
-        $("#guardarPagoPorPagar").attr('disabled', true)
+                }
+            });
+        }
+
+
+        function generar_reporte_excel() {
+            document.getElementById("frmExcel").submit();
+        }
+
+        function generar_reporte_pdf() {
+            document.getElementById("frmPDF").submit();
+        }
+
+
+        function guardarPago1(total_ingreso, suma, id_ingreso, id_moneda, tasa_cambio) {
+
+            lst_producto = new Array(); // Esto hay que limpiarlo por si algo falla.
+
+            $("#guardarPagoPorPagar").attr('disabled', true)
 
 
             if ($("#cantidad_a_pagar").val() == "") {
@@ -219,11 +220,10 @@
             }
 
 
+            //alert(parseFloat(Math.ceil(total_ingreso - suma * 10) / 10))
 
-         //alert(parseFloat(Math.ceil(total_ingreso - suma * 10) / 10))
 
-
-            if (parseFloat($("#cantidad_a_pagar").val())> (total_ingreso - suma).toFixed(2)) {
+            if (parseFloat($("#cantidad_a_pagar").val()) > (total_ingreso - suma).toFixed(2)) {
                 var growlType = 'danger';
                 $.bootstrapGrowl('<h4>Ha ingresado una cantidad mayor a la cantidad a pendiente</h4>', {
                     type: growlType,
@@ -264,8 +264,8 @@
             producto.id_ingreso = id_ingreso;
             producto.cantidad_ingresada = parseFloat($("#cantidad_a_pagar").val());
             producto.id_moneda = id_moneda,
-            producto.tasa_cambio = tasa_cambio
-     
+                producto.tasa_cambio = tasa_cambio
+
             lst_producto.push(producto);
             var miJSON = JSON.stringify(lst_producto);
 
@@ -276,7 +276,7 @@
                 url: '<?= base_url()?>ingresos/guardarPago',
                 success: function (data) {
 
-                    if (data.exito!=false) {
+                    if (data.exito != false) {
 
                         $.ajax({
                             type: 'POST',
@@ -308,6 +308,6 @@
                 }
             })
 
-    }
+        }
 
-</script>
+    </script>

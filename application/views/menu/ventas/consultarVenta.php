@@ -28,13 +28,14 @@
 			<div class="box-content box-nomargin">
 				<div class="tab-content">
 						<div class="tab-pane active" id="lista">
+                            <?php $md = get_moneda_defecto()?>
 							<table class='table table-striped dataTable table-bordered'>
 								<thead>
 									<tr>
 										<th>Nro. Venta</th>
 										<th>Cliente</th>
 										<th>Fecha Reg</th>
-										<th>Monto Total <?php echo MONEDA ?></th>
+										<th>Monto Total <?php echo $md->simbolo ?></th>
 										<th>Documento</th>
 										<th>Forma Pago</th>
 										<th>Accion</th>

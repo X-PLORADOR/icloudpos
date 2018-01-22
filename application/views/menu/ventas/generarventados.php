@@ -1,4 +1,5 @@
 <div id="base_contenido">
+    <?php $md = get_moneda_defecto()?>
 <?php $ruta = base_url(); ?>
 
     <script>
@@ -93,7 +94,7 @@
                                    value="<?php echo $venta[0]['id_moneda'] ?>">
                         <?php else: ?>
                             <div class="input-prepend input-append input-group">
-                                <label class="input-group-addon"><?= MONEDA ?></label>
+                                <label class="input-group-addon"><?= $md->simbolo ?></label>
                                 <input type="text" value="0" id="moneda_tasa"
                                        onkeypress="$('#update_moneda').show();"
                                        class="form-control" onkeydown="return soloDecimal3(this, event);">
@@ -113,7 +114,7 @@
 
                 <div class="col-md-7">
                     <div class="input-prepend input-append input-group">
-                        <label id="lblSim1" class="input-group-addon"><?= MONEDA ?></label>
+                        <label id="lblSim1" class="input-group-addon"><?= $md->simbolo ?></label>
                         <input type="text"
                                class='input-square input-small form-control'
                                name="subTotal" id="subTotal" readonly value="0.00">
@@ -130,7 +131,7 @@
 
                     <div class="input-prepend input-append input-group">
 
-                        <label id="lblSim2" class="input-group-addon"><?= MONEDA ?></label>
+                        <label id="lblSim2" class="input-group-addon"><?= $md->simbolo ?></label>
                         <input type="text" class='input-square input-small form-control' name="montoigv"
                                id="montoigv" readonly value="0.00">
 
@@ -146,7 +147,7 @@
                 </div>
                 <div class="col-md-7">
                     <div class="input-prepend input-append input-group">
-                        <label id="lblSim3" class="input-group-addon"><?= MONEDA ?></label><input style="font-size: 14px;
+                        <label id="lblSim3" class="input-group-addon"><?= $md->simbolo ?></label><input style="font-size: 14px;
     font-weight: bolder;" type="text"
                                                                                                   class='input-square input-small form-control'
                                                                                                   name="totApagar"

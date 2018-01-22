@@ -35,21 +35,21 @@ class banco extends MY_Controller
         $data = array();
         if ($id != FALSE) {
             $data['banco'] = $this->banco_model->get_by('banco_id', $id);
-            $cuenta = $this->db->get_where('caja_desglose', array('id'=>$data['banco']['cuenta_id']))->row();
-            $data['caja_actual'] = $this->db->get_where('caja', array('id' => $cuenta->caja_id))->row();
+            $cuenta = $this->db->get_where('caja_desglose', array('id' => $data['banco']['cuenta_id']))->row();
+            $data['caja_actual'] = $this->db->join('moneda', 'moneda.id_moneda = caja.moneda_id')
+                ->get_where('caja', array('id' => $cuenta->caja_id))->row();
+        } else {
+            $data['caja_actual'] = $this->db->join('moneda', 'moneda.id_moneda = caja.moneda_id')
+                ->get_where('caja', array('moneda_id' => MONEDA_DEFECTO, 'local_id' => $this->session->userdata('int_local_id')))->row();
         }
-        else{
-            $data['caja_actual'] = $this->db->get_where('caja', array('moneda_id' => '1', 'local_id' => $this->session->userdata('int_local_id')))->row();
-        }
 
 
-
-
-        $data['cajas'] = $this->db->select('caja.*, local.local_nombre as local_nombre')
-        	->from('caja')
-        	->join('local', 'local.int_local_id = caja.local_id')
-        	->where('estado', 1)
-        	->get()->result();
+        $data['cajas'] = $this->db->select('caja.*, moneda.*, local.local_nombre as local_nombre')
+            ->from('caja')
+            ->join('local', 'local.int_local_id = caja.local_id')
+            ->join('moneda', 'moneda.id_moneda = caja.moneda_id')
+            ->where('estado', 1)
+            ->get()->result();
         $data['caja_cuentas'] = $this->db->get_where('caja_desglose', array('estado' => 1))->result();
         $this->load->view('menu/banco/form', $data);
     }
@@ -122,7 +122,7 @@ class banco extends MY_Controller
         $resultado = $this->banco_model->buscarNumeroOperacion($num_operacion);
 
         $json = array();
-        if ($resultado == true){
+        if ($resultado == true) {
             $json['error'] = '1';
         }
 
@@ -130,7 +130,7 @@ class banco extends MY_Controller
 
     }
 
-     function DniRucEnBd()
+    function DniRucEnBd()
     {
         $resultado = $this->cliente_model->DniRucEnBd($this->input->post('dni_ruc'), !empty($_POST['cliente_id']) ? $_POST['cliente_id'] : '');
 
